@@ -3,8 +3,11 @@ import GridGame from "./components/GridGame";
 import Record from "./components/Record";
 import MyRecord from "./components/MyRecord";
 import { GiTrophy } from "react-icons/gi";
+import { connectToDB } from "@/utils/database";
 
 export default function Home() {
+  connectToDB();
+  console.log("HELLO");
   return (
     <div>
       <GridGame />
