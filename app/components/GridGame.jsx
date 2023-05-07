@@ -4,12 +4,46 @@ import { GiTrophyCup } from "react-icons/gi";
 
 import { useEffect, useState } from "react";
 
-const GridGame = () => {
-  // useEffect(async () => {
-  //   const response = await fetch("/api/rgbet", { method: "POST" });
+import moment from "moment";
 
-  //   console.log(response);
-  // }, []);
+const GridGame = ({ user }) => {
+  const [game, setGame] = useState({});
+  const [duration, setDuration] = useState(0);
+  console.log("🚀 ~ file: GridGame.jsx:12 ~ GridGame ~ duration:", duration)
+
+  useEffect(() => {
+    async function fetchGame() {
+      const response = await fetch("/api/rgbet", { method: "GET" });
+      const data = await response.json();
+
+      const duration = moment.duration(
+        moment(data?.endTime).diff(moment(data?.startTime))
+      );
+      setDuration(Math.floor(duration.asSeconds()));
+    }
+
+    fetchGame();
+  }, []);
+
+  const handleNumberClick = async (number) => {
+    try {
+      const response = await fetch("/api/rgbet/bet", {
+        method: "POST",
+        body: JSON.stringify({
+          userId: user?.id.toString(),
+          gameId: "6457dd33aee290524e699c7d",
+          betNumber: number,
+          betAmount: 100,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("Bet SUBMITTED");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="p-4">
@@ -23,7 +57,7 @@ const GridGame = () => {
         </div>
         <div className="flex flex-col items-end">
           <span>Count Down</span>
-          <CountdownTimer />
+          <CountdownTimer duration={duration} />
         </div>
       </div>
 
@@ -43,6 +77,7 @@ const GridGame = () => {
         {[...Array(10)].map((_, i) => (
           <button
             key={i}
+            onClick={() => handleNumberClick(i)}
             className={`font-bold py-2 px-4 rounded ${
               i === 0 || i === 5
                 ? "bg-blue-500"
@@ -59,8 +94,8 @@ const GridGame = () => {
   );
 };
 
-function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState(180);
+function CountdownTimer({ duration }) {
+  const [timeLeft, setTimeLeft] = useState(duration);
 
   useEffect(() => {
     if (timeLeft === 0) return;

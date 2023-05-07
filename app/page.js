@@ -1,16 +1,17 @@
-import Image from "next/image";
+"use client";
+
 import GridGame from "./components/GridGame";
 import Record from "./components/Record";
 import MyRecord from "./components/MyRecord";
 import { GiTrophy } from "react-icons/gi";
-import { connectToDB } from "@/utils/database";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
-  
+  const { data: session } = useSession();
 
   return (
     <div>
-      <GridGame />
+      <GridGame user={session?.user} />
 
       <div className="flex items-center justify-center w-full gap-3 mt-8 mb-2">
         <GiTrophy />

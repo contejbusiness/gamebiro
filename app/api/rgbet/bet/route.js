@@ -10,7 +10,6 @@ export const POST = async (request) => {
     // Get the user ID and bet information from the request
 
     const { userId, gameId, betNumber, betAmount } = await request.json();
-    // console.log("🚀 ~ file: route.js:12 ~ POST ~ gameId:", gameId);
 
     await connectToDB();
 
@@ -28,7 +27,8 @@ export const POST = async (request) => {
     const startTime = moment(game.startTime);
     const endTime = moment(game.endTime);
     if (now.isBefore(startTime) || now.isAfter(endTime)) {
-      return new Response("Betting closed", { status: 400 });
+      console.log("TIMEOUT");
+      return new Response("Betting closed", { status: 403 });
     }
 
     // Check if the bet number is valid

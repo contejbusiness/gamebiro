@@ -62,3 +62,20 @@ export const POST = async (request) => {
     // res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const GET = async (request) => {
+  try {
+    console.log("HELLO");
+    await connectToDB();
+
+    const latestGame = await RGBet.findOne({})
+      .sort({ startTime: -1 })
+      .populate({ path: "bets", model: "Bet" })
+      .exec();
+    console.log("🚀 ~ file: route.js:72 ~ GET ~ latestGame:", latestGame);
+
+    return new Response(JSON.stringify(latestGame));
+  } catch (error) {
+    return new Response("Internal Server Error", { status: 500, error: error });
+  }
+};
