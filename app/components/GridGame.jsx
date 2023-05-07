@@ -5,6 +5,12 @@ import { GiTrophyCup } from "react-icons/gi";
 import { useEffect, useState } from "react";
 
 const GridGame = () => {
+  useEffect(async () => {
+    const response = await fetch("/api/rgbet", { method: "POST" });
+
+    console.log(response);
+  }, []);
+
   return (
     <div className="p-4">
       <div className="flex items-center justify-between">

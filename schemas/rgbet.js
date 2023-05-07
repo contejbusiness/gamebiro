@@ -8,22 +8,9 @@ const RGBetSchema = new Schema({
   result: Number,
   gameCount: Number,
   timer: Number,
-  bets: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-      amount: {
-        type: Number,
-        required: true,
-      },
-      number: {
-        type: Number,
-        required: true,
-      },
-    },
-  ],
+  bets: [],
+  startTime: { type: Date, required: true },
+  endTime: { type: Date, required: true },
 });
 
 const RGBet = models.RGBet || model("RGBet", RGBetSchema);
