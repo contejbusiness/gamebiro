@@ -11,7 +11,7 @@ const Record = () => {
     { period: 54123123, price: 30217, number: 1, result: "red" },
     { period: 64123123, price: 30218, number: 1, result: "green" },
     { period: 26123123, price: 30212, number: 1, result: "both" },
-    { period: 23123123, price: 30212, number: 1, result: "green" },
+    { period: 23153123, price: 30212, number: 1, result: "green" },
   ];
 
   return (
@@ -35,7 +35,10 @@ const Record = () => {
         </thead>
         <tbody>
           {data.map((item) => (
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr
+              key={item.period}
+              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            >
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
