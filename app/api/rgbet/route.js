@@ -11,7 +11,7 @@ export const POST = async (request) => {
 
     // Calculate the start and end times for the game
     const startTime = moment();
-    const endTime = moment().add(3, "minutes");
+    const endTime = moment().add(10, "minutes");
 
     // Create a new game in the database
     const game = new RGBet({
@@ -54,9 +54,7 @@ export const POST = async (request) => {
     }, timeout);
 
     // Return the game information to the client
-    return new Response(
-      JSON.stringify({ gameNumber: gameNumber, startTime, endTime })
-    );
+    return new Response(JSON.stringify(game));
     // res.json({ gameNumber, startTime, endTime });
   } catch (error) {
     console.error(error);

@@ -5,11 +5,11 @@ import { GiTrophyCup } from "react-icons/gi";
 import { useEffect, useState } from "react";
 
 const GridGame = () => {
-  useEffect(async () => {
-    const response = await fetch("/api/rgbet", { method: "POST" });
+  // useEffect(async () => {
+  //   const response = await fetch("/api/rgbet", { method: "POST" });
 
-    console.log(response);
-  }, []);
+  //   console.log(response);
+  // }, []);
 
   return (
     <div className="p-4">

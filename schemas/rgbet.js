@@ -6,9 +6,14 @@ const RGBetSchema = new Schema({
     required: true,
   },
   result: Number,
-  gameCount: Number,
+  gameNumber: Number,
   timer: Number,
-  bets: [],
+  bets: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Bet",
+    },
+  ],
   startTime: { type: Date, required: true },
   endTime: { type: Date, required: true },
 });
