@@ -5,6 +5,7 @@ import Record from "./components/Record";
 import MyRecord from "./components/MyRecord";
 import { GiTrophy } from "react-icons/gi";
 import { useSession } from "next-auth/react";
+import Model from "./components/models/model";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -12,7 +13,7 @@ export default function Home() {
   return (
     <div>
       <GridGame user={session?.user} />
-
+      <Model title="Place bet on 2" />
       <div className="flex items-center justify-center w-full gap-3 mt-8 mb-2">
         <GiTrophy />
         <h2>Sapre Record</h2>

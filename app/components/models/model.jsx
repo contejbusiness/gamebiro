@@ -1,115 +1,78 @@
 "use client";
 
-const Model = ({
-  isOpen,
-  onClose,
-  onSubmit,
-  title,
-  body,
-  actionLabel,
-  footer,
-  disabled,
-  secondaryAction,
-  secondaryActionLabel,
-}) => {
-  const [showModal, setShowModal] = useState(isOpen);
+import React, { useState } from "react";
 
-  useEffect(() => {
-    setShowModal(isOpen);
-  }, [isOpen]);
+const Model = ({ title, message, onConfirm, onCancel }) => {
+  const [count, setCount] = useState(1);
+  const [total, setTotal] = useState(10);
 
-  const handleClose = useCallback(() => {
-    if (disabled) {
-      return;
-    }
+  const [active, setActive] = useState(10);
 
-    setShowModal(false);
-    setTimeout(() => {
-      onClose();
-    }, 300);
-  }, [onClose, disabled]);
+  const handleIncrement = () => {
+    setCount((count) => count + 1);
+  };
 
-  const handleSubmit = useCallback(() => {
-    if (disabled) {
-      return;
-    }
-
-    onSubmit();
-  }, [onSubmit, disabled]);
-
-  const handleSecondaryAction = useCallback(() => {
-    if (disabled || !secondaryAction) {
-      return;
-    }
-
-    secondaryAction();
-  }, [secondaryAction, disabled]);
-
-  if (!isOpen) {
-    return null;
-  }
+  const handleDecrement = () => {
+    setCount(count - 1);
+  };
 
   return (
-    <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-neutral-800/70">
-        <div className="relative w-full h-full mx-auto my-6 md:w-4/6 lg:w-3/6 xl:w-2/5 lg:h-auto md:h-auto">
-          {/*content*/}
-          <div
-            className={`
-              translate
-              duration-300
-              h-full
-              ${showModal ? "translate-y-0" : "translate-y-full"}
-              ${showModal ? "opacity-100" : "opacity-0"}
-            `}
-          >
-            <div className="relative flex flex-col w-full h-full bg-white border-0 rounded-lg shadow-lg outline-none translate lg:h-auto md:h-auto focus:outline-none">
-              {/*header*/}
-              <div
-                className="
-                  flex 
-                  items-center 
-                  p-6
-                  rounded-t
-                  justify-center
-                  relative
-                  border-b-[1px]
-                  "
-              >
+    <div className="fixed inset-0 z-10 overflow-y-auto">
+      <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
+        <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+        <div className="inline-block w-4/5 mx-auto overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-lg sm:w-full sm:p-10">
+          <h2 className="px-4 py-4 text-lg text-white bg-blue-500">{title}</h2>
+
+          <div className="p-4">
+            <p>Contract Money</p>
+            <div className="flex items-center justify-between">
+              {[10, 100, 1000, 10000].map((item) => (
                 <button
-                  className="absolute p-1 transition border-0 hover:opacity-70 left-9"
-                  onClick={handleClose}
+                  className={`${
+                    active === item ? "bg-blue-500" : "bg-blue-100"
+                  } p-2 cursor-pointer rounded my-2`}
+                  onClick={() => setActive(item)}
                 >
-                  <IoMdClose size={18} />
+                  {item}
                 </button>
-                <div className="text-lg font-semibold">{title}</div>
+              ))}
+            </div>
+            <div className="flex items-center gap-12 my-8">
+              <p>Number</p>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={handleDecrement}
+                  className="px-4 py-2 bg-blue-100 rounded shadow hover:bg-blue-500"
+                >
+                  -
+                </button>
+                <p>{count}</p>
+                <button
+                  onClick={handleIncrement}
+                  className="px-4 py-2 bg-blue-100 rounded shadow hover:bg-blue-500"
+                >
+                  +
+                </button>
               </div>
-              {/*body*/}
-              <div className="relative flex-auto p-6">{body}</div>
-              {/*footer*/}
-              <div className="flex flex-col gap-2 p-6">
-                <div className="flex flex-row items-center w-full gap-4 ">
-                  {secondaryAction && secondaryActionLabel && (
-                    <Button
-                      disabled={disabled}
-                      label={secondaryActionLabel}
-                      onClick={handleSecondaryAction}
-                      outline
-                    />
-                  )}
-                  <Button
-                    disabled={disabled}
-                    label={actionLabel}
-                    onClick={handleSubmit}
-                  />
-                </div>
-                {footer}
-              </div>
+            </div>
+            <div className="flex items-center my-8">
+              <p>Total : </p>
+              <p className="font-bold text-blue-500">{active * count}</p>
+            </div>
+
+            <div className="flex items-center gap-4 text-white">
+              <button className="flex-1 px-4 py-2 bg-blue-500 rounded shadow">
+                Cancel
+              </button>
+              <button className="flex-1 px-4 py-2 bg-blue-500 rounded shadow">
+                Confirm
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
