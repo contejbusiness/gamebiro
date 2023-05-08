@@ -16,7 +16,7 @@ const GridGame = ({ user }) => {
   const [betValue, setBetValue] = useState("");
 
   useEffect(() => {
-    async function fetchGame() {
+    const fetchGame = async () => {
       const response = await fetch("/api/rgbet", { method: "GET" });
       const data = await response.json();
       setGame(data);
@@ -24,7 +24,7 @@ const GridGame = ({ user }) => {
       const duration = Math.floor(moment(data?.endTime).diff(moment()) / 1000);
 
       setDuration(duration);
-    }
+    };
 
     fetchGame();
   }, []);
@@ -136,7 +136,7 @@ function CountdownTimer({ duration }) {
   }, [duration, seconds]);
 
   useEffect(() => {
-    setSeconds(duration % 60);
+    setSeconds(duration);
     setMinutes(Math.floor(duration / 60));
   }, [duration]);
 
@@ -149,7 +149,7 @@ function CountdownTimer({ duration }) {
 
         <div className="mx-2 font-mono text-2xl text-gray-900">:</div>
         <div className="mx-2 font-mono text-2xl text-gray-900">
-          {String(seconds).padStart(2, "0")}
+          {String(seconds % 60).padStart(2, "0")}
         </div>
       </div>
     </div>

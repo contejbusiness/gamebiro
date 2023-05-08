@@ -9,6 +9,7 @@ const Nav = () => {
   const { data: session } = useSession();
 
   const [providers, setProviders] = useState(null);
+
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
@@ -75,7 +76,14 @@ const Nav = () => {
       {/* Mobile Navigation */}
       <div className="relative flex sm:hidden">
         {session?.user ? (
-          <div className="flex">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 rounded bg-slate-200">
+              <p className="mx-4 text-sm">₹{session?.user.balance}</p>
+              <button className="px-2 py-1 m-1 text-sm text-white bg-green-500 rounded shadow">
+                Add
+              </button>
+            </div>
+
             <Image
               src={session?.user.image}
               width={37}

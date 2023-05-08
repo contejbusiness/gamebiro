@@ -38,6 +38,11 @@ export const POST = async (request) => {
       return new Response("Invalid bet number", { status: 400 });
     }
 
+    const user = await User.findById(userId);
+    if (user.balance < betAmount) {
+      return new Response(JSON.stringify("Insuffecient Balance"));
+    }
+
     // Check if the user has already placed a bet on the same game with the same number
     const existingBet = game.bets.find((bet) => {
       return bet.userId.toString() === userId && bet.betNumber === betNumber;
@@ -66,7 +71,6 @@ export const POST = async (request) => {
     await userBet.save();
 
     // Update the user's balance
-    const user = await User.findById(userId);
     user.balance -= betAmount;
     user.record.push(userBet._id);
 
