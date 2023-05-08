@@ -28,7 +28,9 @@ export const POST = async (request) => {
     const endTime = moment(game.endTime);
     if (now.isBefore(startTime) || now.isAfter(endTime)) {
       console.log("TIMEOUT");
-      return new Response("Betting closed", { status: 403 });
+      return new Response(JSON.stringify({ message: "Betting closed" }), {
+        status: 403,
+      });
     }
 
     // Check if the bet number is valid

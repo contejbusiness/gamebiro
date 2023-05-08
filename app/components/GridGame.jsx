@@ -5,21 +5,25 @@ import { GiTrophyCup } from "react-icons/gi";
 import { useEffect, useState } from "react";
 
 import moment from "moment";
+import Model from "./models/model";
 
 const GridGame = ({ user }) => {
   const [game, setGame] = useState({});
+
   const [duration, setDuration] = useState(0);
-  console.log("🚀 ~ file: GridGame.jsx:12 ~ GridGame ~ duration:", duration)
+
+  const [show, setShow] = useState(false);
+  const [betValue, setBetValue] = useState("");
 
   useEffect(() => {
     async function fetchGame() {
       const response = await fetch("/api/rgbet", { method: "GET" });
       const data = await response.json();
+      setGame(data);
 
-      const duration = moment.duration(
-        moment(data?.endTime).diff(moment(data?.startTime))
-      );
-      setDuration(Math.floor(duration.asSeconds()));
+      const duration = Math.floor(moment(data?.endTime).diff(moment()) / 1000);
+
+      setDuration(duration);
     }
 
     fetchGame();
@@ -27,21 +31,36 @@ const GridGame = ({ user }) => {
 
   const handleNumberClick = async (number) => {
     try {
+      setBetValue(number);
+      setShow(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleOnCancel = () => {
+    setShow(false);
+    setBetValue("");
+  };
+
+  const handleOnSubmit = async (amount) => {
+    try {
       const response = await fetch("/api/rgbet/bet", {
         method: "POST",
         body: JSON.stringify({
           userId: user?.id.toString(),
-          gameId: "6457dd33aee290524e699c7d",
-          betNumber: number,
-          betAmount: 100,
+          gameId: game?._id,
+          betNumber: betValue,
+          betAmount: amount,
         }),
       });
-
       if (response.ok) {
         console.log("Bet SUBMITTED");
+      } else {
+        console.error(await response.json());
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -90,27 +109,36 @@ const GridGame = ({ user }) => {
           </button>
         ))}
       </div>
+      <Model
+        title={`Place bet on ${betValue}`}
+        onShow={show}
+        onCancel={handleOnCancel}
+        onConfirm={handleOnSubmit}
+      />
     </div>
   );
 };
 
 function CountdownTimer({ duration }) {
-  const [timeLeft, setTimeLeft] = useState(duration);
+  const [seconds, setSeconds] = useState(duration);
+  const [minutes, setMinutes] = useState(Math.floor(duration / 60));
 
   useEffect(() => {
-    if (timeLeft === 0) return;
+    let interval = null;
+    if (seconds > 0) {
+      interval = setInterval(() => {
+        setSeconds(seconds - 1);
+      }, 1000);
+    } else {
+      //  onCompletion();
+    }
+    return () => clearInterval(interval);
+  }, [duration, seconds]);
 
-    const intervalId = setInterval(() => {
-      setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-    }, 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [timeLeft]);
-
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
+  useEffect(() => {
+    setSeconds(duration % 60);
+    setMinutes(Math.floor(duration / 60));
+  }, [duration]);
 
   return (
     <div className="flex items-center justify-center">
