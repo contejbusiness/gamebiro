@@ -6,7 +6,11 @@ const RGBetSchema = new Schema({
     required: true,
   },
   result: Number,
-  gameNumber: Number,
+  gameCount: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
   timer: Number,
   bets: [
     {

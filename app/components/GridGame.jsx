@@ -2,30 +2,36 @@
 
 import { GiTrophyCup } from "react-icons/gi";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import moment from "moment";
 import Model from "./models/model";
 
+import { toast } from "react-hot-toast";
+
 const GridGame = ({ user }) => {
-  const [game, setGame] = useState({});
-
-  const [duration, setDuration] = useState(0);
-
   const [show, setShow] = useState(false);
   const [betValue, setBetValue] = useState("");
 
-  useEffect(() => {
-    const fetchGame = async () => {
-      const response = await fetch("/api/rgbet", { method: "GET" });
-      const data = await response.json();
+  const [game, setGame] = useState({});
+  const fetchGame = async () => {
+    const response = await fetch("/api/rgbet", { method: "GET" });
+    const data = await response.json();
+    setGame(data);
+  };
+
+  const checkForUpdates = async () => {
+    const response = await fetch("/api/rgbet", { method: "GET" });
+    const data = await response.json();
+
+    // Compare data with the current game state
+    if (JSON.stringify(data) !== JSON.stringify(game)) {
+      console.log("update found--------");
       setGame(data);
+    }
+  };
 
-      const duration = Math.floor(moment(data?.endTime).diff(moment()) / 1000);
-
-      setDuration(duration);
-    };
-
+  useEffect(() => {
     fetchGame();
   }, []);
 
@@ -43,6 +49,11 @@ const GridGame = ({ user }) => {
     setBetValue("");
   };
 
+  const onTimerComplete = () => {
+    console.log("TIMER COMPLETE");
+    fetchGame();
+  };
+
   const handleOnSubmit = async (amount) => {
     try {
       const response = await fetch("/api/rgbet/bet", {
@@ -55,10 +66,15 @@ const GridGame = ({ user }) => {
         }),
       });
       if (response.ok) {
+        toast.success("Bet Placed");
         console.log("Bet SUBMITTED");
       } else {
-        console.error(await response.json());
+        const data = await response.json();
+        toast.error(data.message);
       }
+
+      setShow(false);
+      setBetValue("");
     } catch (error) {
       console.error(error);
     }
@@ -76,7 +92,10 @@ const GridGame = ({ user }) => {
         </div>
         <div className="flex flex-col items-end">
           <span>Count Down</span>
-          <CountdownTimer duration={duration} />
+          <CountdownTimer
+            duration={Math.floor(moment(game?.endTime).diff(moment()) / 1000)}
+            onTimerComplete={checkForUpdates}
+          />
         </div>
       </div>
 
@@ -119,9 +138,16 @@ const GridGame = ({ user }) => {
   );
 };
 
-function CountdownTimer({ duration }) {
+function CountdownTimer({ duration, onTimerComplete }) {
   const [seconds, setSeconds] = useState(duration);
   const [minutes, setMinutes] = useState(Math.floor(duration / 60));
+
+  function onComplete() {
+    console.log("COMPLTED TIMOUT WATING FOR REFRESH");
+    setTimeout(() => {
+      onTimerComplete();
+    }, 1000 * 8);
+  }
 
   useEffect(() => {
     let interval = null;
@@ -130,7 +156,7 @@ function CountdownTimer({ duration }) {
         setSeconds(seconds - 1);
       }, 1000);
     } else {
-      //  onCompletion();
+      onComplete();
     }
     return () => clearInterval(interval);
   }, [duration, seconds]);

@@ -8,10 +8,11 @@ export const POST = async (request) => {
     // Get the current game number
     const lastGame = await RGBet.findOne().sort({ gameCount: -1 });
     const gameNumber = lastGame ? lastGame.gameCount + 1 : 1;
+    console.log("🚀 ~ file: route.js:11 ~ POST ~ gameNumber:", gameNumber);
 
     // Calculate the start and end times for the game
     const startTime = moment();
-    const endTime = moment().add(10, "minutes");
+    const endTime = moment().add(1, "minutes");
 
     // Create a new game in the database
     const game = new RGBet({
@@ -20,6 +21,7 @@ export const POST = async (request) => {
       startTime: startTime.toDate(),
       endTime: endTime.toDate(),
     });
+    console.log("🚀 ~ file: route.js:24 ~ POST ~ game:", game);
     await game.save();
 
     // Set a timeout to calculate the result of the game
@@ -45,6 +47,10 @@ export const POST = async (request) => {
           }
           updatedGame.result = result;
           await updatedGame.save();
+
+          setTimeout(() => {
+            POST(request);
+          }, 5000);
         }
 
         console.log(`Game ${gameNumber} result: ${result}`);
@@ -65,7 +71,6 @@ export const POST = async (request) => {
 
 export const GET = async (request) => {
   try {
-    console.log("HELLO");
     await connectToDB();
 
     const latestGame = await RGBet.findOne({})
