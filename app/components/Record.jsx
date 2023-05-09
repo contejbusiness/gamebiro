@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const Record = () => {
   const [games, setGames] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10); // number of results per page
+  const [limit, setLimit] = useState(10);
 
   const fetchAllGames = async () => {
     try {
