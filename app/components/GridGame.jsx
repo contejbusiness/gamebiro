@@ -48,12 +48,12 @@ const GridGame = ({}) => {
       checkForUpdates();
     }
     return () => clearInterval(interval);
-  }, [seconds]);
+  }, [seconds, checkForUpdates]);
 
   useEffect(() => {
     console.log("RERENDERING");
     fetchGame();
-  }, []);
+  }, [fetchGame]);
 
   const handleNumberClick = async (number) => {
     try {
@@ -110,7 +110,6 @@ const GridGame = ({}) => {
           <span>Count Down</span>
           <CountdownTimer
             duration={Math.floor(moment(game?.endTime).diff(moment()) / 1000)}
-            // onTimerComplete={checkForUpdates}
           />
         </div>
       </div>
@@ -154,16 +153,9 @@ const GridGame = ({}) => {
   );
 };
 
-function CountdownTimer({ duration, onTimerComplete }) {
+function CountdownTimer({ duration }) {
   const [seconds, setSeconds] = useState(duration);
   const [minutes, setMinutes] = useState(Math.floor(duration / 60));
-
-  function onComplete() {
-    console.log("COMPLTED TIMOUT WATING FOR REFRESH");
-    setTimeout(() => {
-      onTimerComplete();
-    }, 1000 * 8);
-  }
 
   useEffect(() => {
     let interval = null;
@@ -172,7 +164,6 @@ function CountdownTimer({ duration, onTimerComplete }) {
         setSeconds(seconds - 1);
       }, 1000);
     } else {
-      //  onComplete();
     }
     return () => clearInterval(interval);
   }, [duration, seconds]);
@@ -191,7 +182,7 @@ function CountdownTimer({ duration, onTimerComplete }) {
 
         <div className="mx-2 font-mono text-2xl text-gray-900">:</div>
         <div className="mx-2 font-mono text-2xl text-gray-900">
-          {duration > 0 ?  String(seconds % 60).padStart(2, "0") : "00"}
+          {duration > 0 ? String(seconds % 60).padStart(2, "0") : "00"}
         </div>
       </div>
     </div>

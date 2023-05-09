@@ -37,7 +37,7 @@ const Record = () => {
 
   useEffect(() => {
     fetchAllGames();
-  }, [page, limit]);
+  }, [page, limit, fetchAllGames]);
 
   return (
     <div className="relative p-4 overflow-x-auto">
@@ -71,7 +71,15 @@ const Record = () => {
               <td className="px-6 py-4">
                 {item?.result ? item?.result : "waiting..."}
               </td>
-              <td className="px-6 py-4">{`green`}</td>
+              <td className={`px-6 py-4`}>
+                {item?.result == 5 || item?.result == 0 ? (
+                  <div className="p-2 bg-blue-500 rounded-full w-2 h-2" />
+                ) : item?.result % 2 == 0 ? (
+                  <div className="p-2 bg-green-500 rounded-full w-2 h-2" />
+                ) : (
+                  <div className="p-2 bg-red-500 rounded-full w-2 h-2" />
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

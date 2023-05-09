@@ -44,7 +44,7 @@ const MyRecord = () => {
 
   useEffect(() => {
     fetchMyGameRecords();
-  }, [session?.user]);
+  }, [session?.user, fetchMyGameRecords]);
 
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;
@@ -52,15 +52,9 @@ const MyRecord = () => {
 
   return (
     <div className=" p-4 w-full">
-      {currentRecords.map((value) => {
-        const totalBetAmount = value.reduce(
-          (total, item) => total + item.betAmount,
-          0
-        );
-        const commission = (totalBetAmount * 5) / 100;
-        const totalWithCommission = totalBetAmount - commission;
+      {currentRecords.map((value, i) => {
         return (
-          <div className="border-b">
+          <div key={i} className="border-b">
             <div className="flex items-center justify-between bg-blue-200 py-2 px-4 text-xs font-bold">
               <div className="flex items-center gap-3">
                 <span>PERIOD</span>
@@ -77,8 +71,8 @@ const MyRecord = () => {
             <div className="flex items-center gap-4 my-5">
               <div className="">Bets</div>
               <div className="flex items-center">
-                {value.map((item) => (
-                  <div className="border px-4 py-2 gap-2 flex">
+                {value.map((item, i) => (
+                  <div key={i} className="border px-4 py-2 gap-2 flex">
                     {/* {`Bet Number : ${item.betNumber} - `}{" "} */}
                     <span>{item.betNumber} : </span>
                     <span className="text-green-500">₹{item.betAmount}</span>
@@ -90,9 +84,9 @@ const MyRecord = () => {
         );
       })}
       <div className="flex justify-center items-center mt-4">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page, i) => (
           <button
-            key={page}
+            key={i}
             className={`px-3 py-1 rounded ${
               page === currentPage ? "bg-gray-400" : "bg-gray-200"
             }`}
