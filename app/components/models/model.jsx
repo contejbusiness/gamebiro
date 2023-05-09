@@ -32,6 +32,7 @@ const Model = ({ title, onConfirm, onCancel, onShow }) => {
               <div className="flex items-center justify-between">
                 {[10, 100, 1000, 10000].map((item) => (
                   <button
+                    key={item}
                     className={`${
                       active === item ? "bg-blue-500" : "bg-blue-100"
                     } p-2 cursor-pointer rounded my-2`}

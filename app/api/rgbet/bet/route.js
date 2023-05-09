@@ -10,6 +10,13 @@ export const POST = async (request) => {
     // Get the user ID and bet information from the request
 
     const { userId, gameId, betNumber, betAmount } = await request.json();
+    console.log(
+      "🚀 ~ file: route.js:13 ~ POST ~ userId, gameId, betNumber, betAmount:",
+      userId,
+      gameId,
+      betNumber,
+      betAmount
+    );
 
     await connectToDB();
 
@@ -40,7 +47,9 @@ export const POST = async (request) => {
 
     const user = await User.findById(userId);
     if (user.balance < betAmount) {
-      return new Response(JSON.stringify("Insuffecient Balance"));
+      return new Response(JSON.stringify("Insuffecient Balance"), {
+        status: 403,
+      });
     }
 
     // Check if the user has already placed a bet on the same game with the same number
