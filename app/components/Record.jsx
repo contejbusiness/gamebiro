@@ -3,25 +3,16 @@
 import { useEffect, useState } from "react";
 
 const Record = () => {
-  const data = [
-    { period: 23123123, price: 30212, number: 1, result: "green" },
-    { period: 41312435, price: 30213, number: 1, result: "red" },
-    { period: 33123126, price: 30215, number: 1, result: "both" },
-    { period: 42123134, price: 30213, number: 1, result: "green" },
-    { period: 12123154, price: 30215, number: 1, result: "red" },
-    { period: 43123123, price: 30216, number: 1, result: "both" },
-    { period: 54123123, price: 30217, number: 1, result: "red" },
-    { period: 64123123, price: 30218, number: 1, result: "green" },
-    { period: 26123123, price: 30212, number: 1, result: "both" },
-    { period: 23153123, price: 30212, number: 1, result: "green" },
-  ];
-
   const [games, setGames] = useState([]);
-  console.log("🚀 ~ file: Record.jsx:20 ~ Record ~ games:", games);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10); // number of results per page
 
   const fetchAllGames = async () => {
     try {
-      const response = await fetch("/api/rgbet/all", { method: "GET" });
+      const response = await fetch(
+        `/api/rgbet/all?page=${page}&limit=${limit}`,
+        { method: "GET" }
+      );
       const data = await response.json();
 
       if (response.ok) {
@@ -34,9 +25,19 @@ const Record = () => {
     }
   };
 
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    setPage(page + 1);
+  };
+
   useEffect(() => {
     fetchAllGames();
-  }, []);
+  }, [page, limit]);
 
   return (
     <div className="relative p-4 overflow-x-auto">
@@ -75,6 +76,20 @@ const Record = () => {
           ))}
         </tbody>
       </table>
+      <div className="flex justify-center mt-4">
+        <button
+          className="mr-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+          onClick={handlePrevPage}
+        >
+          Previous
+        </button>
+        <button
+          className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+          onClick={handleNextPage}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

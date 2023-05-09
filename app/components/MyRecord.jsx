@@ -3,12 +3,30 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import BetRow from "./rows/BetRow";
 
 const MyRecord = () => {
+  const PAGE_SIZE = 1; // set the number of records per page
   const { data: session } = useSession();
+  const [records, setRecords] = useState([]);
+  console.log("🚀 ~ file: MyRecord.jsx:12 ~ MyRecord ~ records:", records);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [records, setRecords] = useState({});
-  console.log("🚀 ~ file: MyRecord.jsx:11 ~ MyRecord ~ records:", records);
+  const grouped = records.reduce((acc, obj) => {
+    const key = obj.gameId._id;
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(obj);
+    return acc;
+  }, {});
+
+  const totalRecords = Object.keys(grouped).length;
+  const totalPages = Math.ceil(totalRecords / PAGE_SIZE);
+
+  const handleClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const fetchMyGameRecords = async () => {
     try {
@@ -28,41 +46,62 @@ const MyRecord = () => {
     fetchMyGameRecords();
   }, [session?.user]);
 
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
+  const currentRecords = Object.values(grouped).slice(startIndex, endIndex);
+
   return (
-    <div className="relative p-4 overflow-x-auto">
-      <table className="w-full text-sm text-left">
-        <thead className="text-xs uppercase bg-blue-200">
-          <tr>
-            <th scope="col" className="px-6 py-3">
-              Period
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Price
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Number
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Result
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {session?.user?.records.map((item) => (
-            <tr key={item.period} className="bg-white border-b">
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium  whitespace-nowrap"
-              >
-                {item?.gameId?.gameCount}
-              </th>
-              <td className="px-6 py-4">{item.price}</td>
-              <td className="px-6 py-4">{item.number}</td>
-              <td className="px-6 py-4">{item.result}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className=" p-4 w-full">
+      {currentRecords.map((value) => {
+        const totalBetAmount = value.reduce(
+          (total, item) => total + item.betAmount,
+          0
+        );
+        const commission = (totalBetAmount * 5) / 100;
+        const totalWithCommission = totalBetAmount - commission;
+        return (
+          <div className="border-b">
+            <div className="flex items-center justify-between bg-blue-200 py-2 px-4 text-xs font-bold">
+              <div className="flex items-center gap-3">
+                <span>PERIOD</span>
+                <span>{value[0]?.gameId?.gameCount}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span>RESULT</span>
+                <span>{value[0]?.gameId?.result}</span>
+              </div>
+            </div>
+            <span className="text-xs my-4">
+              5% Commission is charged for each bet
+            </span>
+            <div className="flex items-center gap-4 my-5">
+              <div className="">Bets</div>
+              <div className="flex items-center">
+                {value.map((item) => (
+                  <div className="border px-4 py-2 gap-2 flex">
+                    {/* {`Bet Number : ${item.betNumber} - `}{" "} */}
+                    <span>{item.betNumber} : </span>
+                    <span className="text-green-500">₹{item.betAmount}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+      <div className="flex justify-center items-center mt-4">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            className={`px-3 py-1 rounded ${
+              page === currentPage ? "bg-gray-400" : "bg-gray-200"
+            }`}
+            onClick={() => handleClick(page)}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

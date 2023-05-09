@@ -27,10 +27,7 @@ const handler = NextAuth({
         await connectToDB();
 
         let userExists = await User.findOne({ email: profile.email });
-        console.log(
-          "🚀 ~ file: route.js:27 ~ signIn ~ userExists:",
-          userExists
-        );
+      
 
         if (!userExists) {
           await User.create({
