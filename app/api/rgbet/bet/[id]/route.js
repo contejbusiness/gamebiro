@@ -7,6 +7,8 @@ export const GET = async (request, { params }) => {
   try {
     await connectToDB();
 
+    console.log("GET BET BY ID ROUTE")
+
     const { id } = params;
 
     const user = await User.findById(id);

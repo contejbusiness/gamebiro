@@ -9,7 +9,6 @@ const MyRecord = () => {
   const PAGE_SIZE = 1; // set the number of records per page
   const { data: session } = useSession();
   const [records, setRecords] = useState([]);
-  console.log("🚀 ~ file: MyRecord.jsx:12 ~ MyRecord ~ records:", records);
   const [currentPage, setCurrentPage] = useState(1);
 
   const grouped = records.reduce((acc, obj) => {
@@ -44,7 +43,7 @@ const MyRecord = () => {
 
   useEffect(() => {
     fetchMyGameRecords();
-  }, [session?.user, fetchMyGameRecords]);
+  }, [session?.user]);
 
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;

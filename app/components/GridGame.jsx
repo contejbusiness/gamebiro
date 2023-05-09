@@ -6,13 +6,14 @@ import { useEffect, useState } from "react";
 
 import moment from "moment";
 import Model from "./models/model";
-import { useRouter } from "next/navigation";
 
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
-const GridGame = ({}) => {
+const GridGame = () => {
   const { data: session } = useSession();
+  console.log("🚀 ~ file: GridGame.jsx:15 ~ GridGame ~ session:", session);
+
   const [show, setShow] = useState(false);
   const [betValue, setBetValue] = useState("");
 
@@ -20,6 +21,7 @@ const GridGame = ({}) => {
   const [seconds, setSeconds] = useState();
 
   const fetchGame = async () => {
+    console.log("FETCH FUNCTION IS CALLED");
     const response = await fetch("/api/rgbet", { method: "GET" });
     const data = await response.json();
     setGame(data);
@@ -27,11 +29,10 @@ const GridGame = ({}) => {
   };
 
   const checkForUpdates = async () => {
-    console.log("Checking for updates");
+    console.log("UPDATE FUNCTION IS CALLED");
     const response = await fetch("/api/rgbet", { method: "GET" });
     const data = await response.json();
 
-    // Compare data with the current game state
     if (JSON.stringify(data) !== JSON.stringify(game)) {
       console.log("update found--------");
       setGame(data);
@@ -39,21 +40,23 @@ const GridGame = ({}) => {
   };
 
   useEffect(() => {
+    console.log("IS PROBLEM");
+    let s = seconds;
     let interval = null;
-    if (seconds > 0) {
+    if (s > 0) {
       interval = setInterval(() => {
         setSeconds(seconds - 1);
+        s -= 1;
       }, 1000);
     } else {
       checkForUpdates();
     }
     return () => clearInterval(interval);
-  }, [seconds, checkForUpdates]);
+  }, [seconds, game]);
 
   useEffect(() => {
-    console.log("RERENDERING");
     fetchGame();
-  }, [fetchGame]);
+  }, []);
 
   const handleNumberClick = async (number) => {
     try {

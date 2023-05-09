@@ -9,6 +9,8 @@ export const POST = async (request) => {
   try {
     // Get the user ID and bet information from the request
 
+    console.log("GET ALL BET ROUTE")
+
     const { userId, gameId, betNumber, betAmount } = await request.json();
     console.log(
       "🚀 ~ file: route.js:13 ~ POST ~ userId, gameId, betNumber, betAmount:",

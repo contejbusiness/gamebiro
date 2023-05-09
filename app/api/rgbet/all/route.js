@@ -6,6 +6,8 @@ export const GET = async (request) => {
   try {
     await connectToDB();
 
+    console.log("GET ALL GAMES ROUTE")
+
     const { searchParams } = new URL(request.url);
 
     const page = searchParams.get("page");

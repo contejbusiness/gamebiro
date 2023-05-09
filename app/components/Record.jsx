@@ -37,7 +37,7 @@ const Record = () => {
 
   useEffect(() => {
     fetchAllGames();
-  }, [page, limit, fetchAllGames]);
+  }, [page, limit]);
 
   return (
     <div className="relative p-4 overflow-x-auto">
