@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 const Record = () => {
   const data = [
     { period: 23123123, price: 30212, number: 1, result: "green" },
@@ -13,6 +15,28 @@ const Record = () => {
     { period: 26123123, price: 30212, number: 1, result: "both" },
     { period: 23153123, price: 30212, number: 1, result: "green" },
   ];
+
+  const [games, setGames] = useState([]);
+  console.log("🚀 ~ file: Record.jsx:20 ~ Record ~ games:", games);
+
+  const fetchAllGames = async () => {
+    try {
+      const response = await fetch("/api/rgbet/all", { method: "GET" });
+      const data = await response.json();
+
+      if (response.ok) {
+        setGames(data);
+      } else {
+        toast.error(data);
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllGames();
+  }, []);
 
   return (
     <div className="relative p-4 overflow-x-auto">
@@ -34,17 +58,19 @@ const Record = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
-            <tr key={item.period} className="bg-white border-b ">
+          {games.map((item) => (
+            <tr key={item?.gameCount} className="bg-white border-b ">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium whitespace-nowrap "
               >
-                {item.period}
+                {item?.gameCount}
               </th>
-              <td className="px-6 py-4">{item.price}</td>
-              <td className="px-6 py-4">{item.number}</td>
-              <td className="px-6 py-4">{item.result}</td>
+              <td className="px-6 py-4">{32345}</td>
+              <td className="px-6 py-4">
+                {item?.result ? item?.result : "waiting..."}
+              </td>
+              <td className="px-6 py-4">{`green`}</td>
             </tr>
           ))}
         </tbody>

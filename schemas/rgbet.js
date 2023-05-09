@@ -5,7 +5,11 @@ const RGBetSchema = new Schema({
     type: Number,
     required: true,
   },
-  result: Number,
+  result: {
+    type: String,
+    default: "",
+    required: true,
+  },
   gameCount: {
     type: Number,
     default: 0,

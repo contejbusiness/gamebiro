@@ -186,12 +186,12 @@ function CountdownTimer({ duration, onTimerComplete }) {
     <div className="flex items-center justify-center">
       <div className="flex items-center p-2 bg-white rounded-lg shadow-lg">
         <div className="mx-2 font-mono text-2xl text-gray-900">
-          {String(minutes).padStart(2, "0")}
+          {duration > 0 ? String(minutes).padStart(2, "0") : "00"}
         </div>
 
         <div className="mx-2 font-mono text-2xl text-gray-900">:</div>
         <div className="mx-2 font-mono text-2xl text-gray-900">
-          {String(seconds % 60).padStart(2, "0")}
+          {duration > 0 ?  String(seconds % 60).padStart(2, "0") : "00"}
         </div>
       </div>
     </div>
