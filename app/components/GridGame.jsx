@@ -12,12 +12,12 @@ import { useSession } from "next-auth/react";
 
 const GridGame = () => {
   const { data: session } = useSession();
-  console.log("🚀 ~ file: GridGame.jsx:15 ~ GridGame ~ session:", session);
 
   const [show, setShow] = useState(false);
   const [betValue, setBetValue] = useState("");
 
   const [game, setGame] = useState({});
+  console.log("🚀 ~ file: GridGame.jsx:20 ~ GridGame ~ game:", game);
   const [seconds, setSeconds] = useState();
 
   const fetchGame = async () => {
@@ -52,7 +52,7 @@ const GridGame = () => {
       checkForUpdates();
     }
     return () => clearInterval(interval);
-  }, [seconds, game]);
+  }, [ game]);
 
   useEffect(() => {
     fetchGame();

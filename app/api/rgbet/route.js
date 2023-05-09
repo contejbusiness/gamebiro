@@ -74,3 +74,18 @@ export const POST = async (request) => {
     // res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const GET = async (request) => {
+  try {
+    await connectToDB();
+
+    const latestGame = await RGBet.findOne({})
+      .sort({ startTime: -1 })
+      .populate({ path: "bets", model: "Bet" })
+      .exec();
+
+    return new Response(JSON.stringify(latestGame));
+  } catch (error) {
+    return new Response("Internal Server Error", { status: 500, error: error });
+  }
+};
