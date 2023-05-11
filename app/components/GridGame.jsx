@@ -9,6 +9,7 @@ import Model from "./models/model";
 
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import useGame from "@/hooks/useGame";
 
 const GridGame = () => {
   const { data: session } = useSession();
@@ -17,53 +18,47 @@ const GridGame = () => {
   const [betValue, setBetValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [game, setGame] = useState({});
+  // const [game, setGame] = useState({});
 
-  const [seconds, setSeconds] = useState();
+  // const [seconds, setSeconds] = useState();
 
-  const fetchGame = async () => {
-    const response = await fetch("/api/rgbet", { method: "GET" });
-    const data = await response.json();
-    setGame(data);
-    setSeconds(Math.floor(moment(game?.endTime).diff(moment()) / 1000) + 10000);
-  };
+  // const fetchGame = async () => {
+  //   const response = await fetch("/api/rgbet", { method: "GET" });
+  //   const data = await response.json();
+  //   setGame(data);
+  //   setSeconds(Math.floor(moment(game?.endTime).diff(moment()) / 1000) + 10000);
+  // };
 
-  const checkForUpdates = async () => {
-    console.log("UPDATE FUNCTION IS CALLED");
-    const response = await fetch("/api/rgbet", { method: "GET" });
-    const data = await response.json();
+  // const checkForUpdates = async () => {
+  //   console.log("UPDATE FUNCTION IS CALLED");
+  //   const response = await fetch("/api/rgbet", { method: "GET" });
+  //   const data = await response.json();
 
-    if (JSON.stringify(data) !== JSON.stringify(game)) {
-      //  refreshPage();
-      setGame(data);
-    }
+  //   if (JSON.stringify(data) !== JSON.stringify(game)) {
+  //     setGame(data);
+  //   }
+  // };
 
-    // const currentTime = moment();
-    // const endTime = moment(game.endTime);
+  // useEffect(() => {
+  //   console.log("IS PROBLEM");
+  //   let s = Math.floor(moment(game?.endTime).diff(moment()) / 1000) + 5000;
+  //   let interval = null;
+  //   if (s > 0) {
+  //     interval = setInterval(() => {
+  //       setSeconds(seconds - 1);
+  //       s -= 1;
+  //     }, 1000);
+  //   } else {
+  //     checkForUpdates();
+  //   }
+  // }, [game]);
 
-    // if (currentTime > endTime) {
-    //   console.log("GAME FINISHED. FETCHING NEW GAME DATA...");
-    //   fetchGame();
-    // }
-  };
+  // useEffect(() => {
+  //   fetchGame();
+  // }, []);
 
-  useEffect(() => {
-    console.log("IS PROBLEM");
-    let s = Math.floor(moment(game?.endTime).diff(moment()) / 1000) + 5000;
-    let interval = null;
-    if (s > 0) {
-      interval = setInterval(() => {
-        setSeconds(seconds - 1);
-        s -= 1;
-      }, 1000);
-    } else {
-      checkForUpdates();
-    }
-  }, [game]);
-
-  useEffect(() => {
-    fetchGame();
-  }, []);
+  const { game } = useGame();
+  console.log("🚀 ~ file: GridGame.jsx:61 ~ GridGame ~ game:", game);
 
   const handleNumberClick = async (number) => {
     try {
