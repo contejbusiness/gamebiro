@@ -3,53 +3,30 @@
 import { toast } from "react-hot-toast";
 import RedeemBalanceForm from "../components/inputs/RedeemBalanceForm";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import moment from "moment";
 
 const Page = () => {
   const { data: session } = useSession();
 
-  console.log("lajflaksjflaksjflasjfd");
-  console.log("🚀 ~ file: page.jsx:10 ~ Page ~ session:", session);
-
-  const data = [
-    {
-      amount: 100,
-      time: "20-JAN-2021",
-      status: "PENDING",
-    },
-    {
-      amount: 50,
-      time: "20-JAN-2021",
-      status: "DONE",
-    },
-    {
-      amount: 120,
-      time: "20-JAN-2021",
-      status: "DONE",
-    },
-    {
-      amount: 170,
-      time: "20-JAN-2021",
-      status: "DONE",
-    },
-  ];
+  const [list, setList] = useState([]);
 
   const fetchRedeems = async () => {
     const response = await fetch("/api/redeem", {
       method: "PUT",
-      body: {
+      body: JSON.stringify({
         email: session?.user?.email,
-      },
+      }),
     });
     const data = await response.json();
+    console.log("🚀 ~ file: page.jsx:42 ~ fetchRedeems ~ data:", data);
     if (response.ok) {
-      toast.success("FOUND");
+      setList(data);
     } else {
-      toast.error("ERROR");
+      console.log("No Redeems made");
     }
   };
 
-  
   useEffect(() => {
     fetchRedeems();
   }, []);
@@ -92,10 +69,12 @@ const Page = () => {
       <h2 className="text-lg mt-6">Redeem History</h2>
       <p className="text-xs text-slate-500">Status of your recent requests</p>
 
-      {data.map((item) => (
+      {list.map((item) => (
         <div className="border-b py-4">
           <div className="flex items-center justify-between w-full">
-            <h2 className="text-sm  text-slate-700 ">{item.time}</h2>
+            <h2 className="text-sm  text-slate-700 ">
+              {moment(item.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+            </h2>
             <p className="text-green-500">{item.amount}</p>
           </div>
           <p className="text-xs mt-2">

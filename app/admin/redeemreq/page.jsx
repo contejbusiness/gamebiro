@@ -27,8 +27,24 @@ const Page = () => {
   }, []);
 
   const handleSubmit = async (request) => {
-    
-  }
+    try {
+      const response = await fetch("/api/admin/redeemreq", {
+        method: "PUT",
+        body: JSON.stringify({
+          id: request,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("Status Updated");
+      } else {
+        toast.error(data);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div className="p-4">
@@ -63,7 +79,10 @@ const Page = () => {
                 - {redeem?.status}
               </p>
             </div>
-            <button className="px-4 py-2 text-xs bg-blue-500 shadow rounded text-white">
+            <button
+              className="px-4 py-2 text-xs bg-blue-500 shadow rounded text-white"
+              onClick={() => handleSubmit(redeem._id)}
+            >
               DONE
             </button>
           </div>
