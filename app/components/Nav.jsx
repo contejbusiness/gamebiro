@@ -32,7 +32,7 @@ const Nav = () => {
           height={30}
           className="object-contain"
         />
-        <p className="logo_text">Promptopia</p>
+        <p className="text-sm ml-2">GameBiro</p>
       </Link>
 
       {/* Desktop Navigation */}
@@ -84,7 +84,7 @@ const Nav = () => {
               <p className="mx-4 text-sm">₹{session?.user.balance}</p>
               <button
                 className="px-2 py-1 m-1 text-sm text-white bg-green-500 rounded shadow"
-                onClick={() => router.push("/payment")}
+                onClick={() => router.push("/paymentqr")}
               >
                 Add
               </button>
@@ -102,19 +102,19 @@ const Nav = () => {
             {toggleDropdown && (
               <div className="dropdown">
                 <Link
-                  href="/profile"
+                  href="/redeem"
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >
-                  My Profile
+                  Redeem Balance
                 </Link>
-                <Link
+                {/* <Link
                   href="/create-prompt"
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >
                   Create Prompt
-                </Link>
+                </Link> */}
                 <button
                   type="button"
                   onClick={() => {
