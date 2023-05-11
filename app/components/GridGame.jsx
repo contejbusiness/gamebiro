@@ -34,14 +34,22 @@ const GridGame = () => {
     const data = await response.json();
 
     if (JSON.stringify(data) !== JSON.stringify(game)) {
-      console.log("update found--------");
+      //  refreshPage();
       setGame(data);
+    }
+
+    const currentTime = moment();
+    const endTime = moment(game.endTime);
+
+    if (currentTime > endTime) {
+      console.log("GAME FINISHED. FETCHING NEW GAME DATA...");
+      fetchGame();
     }
   };
 
   useEffect(() => {
     console.log("IS PROBLEM");
-    let s = seconds;
+    let s = Math.floor(moment(game?.endTime).diff(moment()) / 1000) + 5000;
     let interval = null;
     if (s > 0) {
       interval = setInterval(() => {
@@ -51,7 +59,6 @@ const GridGame = () => {
     } else {
       checkForUpdates();
     }
-    return () => clearInterval(interval);
   }, [game]);
 
   useEffect(() => {
@@ -75,27 +82,31 @@ const GridGame = () => {
   const handleOnSubmit = async (amount) => {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/rgbet/bet", {
-        method: "POST",
-        body: JSON.stringify({
-          userId: session.user?.id.toString(),
-          gameId: game?._id,
-          betNumber: betValue,
-          betAmount: amount,
-        }),
-      });
+      if (session?.user?.email) {
+        const response = await fetch("/api/rgbet/bet", {
+          method: "POST",
+          body: JSON.stringify({
+            userId: session.user?.id.toString(),
+            gameId: game?._id,
+            betNumber: betValue,
+            betAmount: amount,
+          }),
+        });
 
-      if (response.ok) {
-        toast.success("Bet Placed");
-        console.log("Bet SUBMITTED");
+        if (response.ok) {
+          toast.success("Bet Placed");
+          console.log("Bet SUBMITTED");
+        } else {
+          const data = await response.json();
+
+          toast.error(data);
+        }
+
+        setShow(false);
+        setBetValue("");
       } else {
-        const data = await response.json();
-
-        toast.error(data);
+        toast.error("Please Login to play");
       }
-
-      setShow(false);
-      setBetValue("");
     } catch (error) {
       console.error(error);
     } finally {

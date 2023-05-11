@@ -27,6 +27,10 @@ const MyRecord = () => {
     setCurrentPage(pageNumber);
   };
 
+  const handleRefresh = () => {
+    fetchMyGameRecords();
+  };
+
   const fetchMyGameRecords = async () => {
     try {
       const response = await fetch(`/api/rgbet/bet/${session?.user?.id}`, {
@@ -64,9 +68,17 @@ const MyRecord = () => {
                 <span>{value[0]?.gameId?.result}</span>
               </div>
             </div>
-            <span className="text-xs my-4">
-              5% Commission is charged for each bet
-            </span>
+            <div className="flex items-center justify-between">
+              <p className="text-xs my-3">
+                5% Commission is charged for each bet
+              </p>
+              <button
+                onClick={() => handleRefresh()}
+                className="text-white bg-blue-500  px-2 py-1 text-xs rounded-full shadow"
+              >
+                Refresh
+              </button>
+            </div>
             <div className="flex items-center gap-4 my-5">
               <div className="">Bets</div>
               <div className="flex items-center">

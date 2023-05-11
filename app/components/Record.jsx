@@ -40,20 +40,20 @@ const Record = () => {
   }, [page, limit]);
 
   return (
-    <div className="relative p-4 overflow-x-auto">
+    <div className="relative p-4">
       <table className="w-full text-sm text-left">
         <thead className="text-xs uppercase bg-blue-200">
           <tr>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-3 py-3">
               Period
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-3 py-3">
               Price
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-3 py-3">
               Number
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-3 py-3">
               Result
             </th>
           </tr>
