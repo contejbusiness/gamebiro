@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -11,6 +12,8 @@ const Nav = () => {
   const [providers, setProviders] = useState(null);
 
   const [toggleDropdown, setToggleDropdown] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -79,7 +82,10 @@ const Nav = () => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 rounded bg-slate-200">
               <p className="mx-4 text-sm">₹{session?.user.balance}</p>
-              <button className="px-2 py-1 m-1 text-sm text-white bg-green-500 rounded shadow">
+              <button
+                className="px-2 py-1 m-1 text-sm text-white bg-green-500 rounded shadow"
+                onClick={() => router.push("/payment")}
+              >
                 Add
               </button>
             </div>
