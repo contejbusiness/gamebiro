@@ -69,8 +69,8 @@ const Page = () => {
       <h2 className="text-lg mt-6">Redeem History</h2>
       <p className="text-xs text-slate-500">Status of your recent requests</p>
 
-      {list.map((item) => (
-        <div className="border-b py-4">
+      {list.map((item, i) => (
+        <div key={i} className="border-b py-4">
           <div className="flex items-center justify-between w-full">
             <h2 className="text-sm  text-slate-700 ">
               {moment(item.createdAt).format("MMMM Do YYYY, h:mm:ss a")}

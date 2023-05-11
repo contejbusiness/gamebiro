@@ -14,7 +14,7 @@ const Page = () => {
         <h2 className="text-lg">Scan QR </h2>
         <p className="text-xs text-slate-500">Scan QR code to Add Balance</p>
         <div className="w-full flex justify-center py-4">
-          <Image src="/images/qr.png" width={400} height={400} />
+          <Image src="/images/qr.png" width={400} height={400}  alt="qrcode"/>
         </div>
       </div>
 

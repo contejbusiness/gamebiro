@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import AddBalanceForm from "../components/inputs/AddBalanceForm";
 import { toast } from "react-hot-toast";
 import SubmitWinnerForm from "../components/inputs/SubmitWinnerForm";
-import RecentGames from "../components/RecentGames";
 
 const Page = () => {
   const [currentGame, setCurrentGame] = useState({});
@@ -96,7 +95,7 @@ const Page = () => {
 
   useEffect(() => {
     fetchCurrentGame();
-  }, []);
+  }, [fetchCurrentGame]);
 
   return (
     <div className="px-4">
@@ -124,7 +123,10 @@ const Page = () => {
           <div className="grid grid-cols-5 gap-3">
             {gameBets ? (
               gameBets.map((bet, i) => (
-                <div key={i} className="flex flex-col items-center justify-center py-2 border rounded gap-2">
+                <div
+                  key={i}
+                  className="flex flex-col items-center justify-center py-2 border rounded gap-2"
+                >
                   <div className="border-b">{bet.betNumber}</div>
                   <div className="text-blue-500 font-bold">
                     ₹{bet.betAmount}

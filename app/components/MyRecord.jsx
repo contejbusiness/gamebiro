@@ -3,7 +3,6 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import BetRow from "./rows/BetRow";
 
 const MyRecord = () => {
   const PAGE_SIZE = 1; // set the number of records per page
@@ -41,7 +40,7 @@ const MyRecord = () => {
         setRecords(data);
       }
     } catch (error) {
-      toast.error(data.message);
+      toast.error(error);
     }
   };
 

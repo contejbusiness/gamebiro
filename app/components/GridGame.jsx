@@ -59,11 +59,11 @@ const GridGame = () => {
     } else {
       checkForUpdates();
     }
-  }, [game]);
+  }, [game, checkForUpdates]);
 
   useEffect(() => {
     fetchGame();
-  }, []);
+  }, [fetchGame]);
 
   const handleNumberClick = async (number) => {
     try {
@@ -86,7 +86,7 @@ const GridGame = () => {
         const response = await fetch("/api/rgbet/bet", {
           method: "POST",
           body: JSON.stringify({
-            userId: session.user?.id.toString(),
+            userId: session.user?.id,
             gameId: game?._id,
             betNumber: betValue,
             betAmount: amount,

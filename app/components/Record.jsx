@@ -59,8 +59,8 @@ const Record = () => {
           </tr>
         </thead>
         <tbody>
-          {games.map((item) => (
-            <tr key={item?.gameCount} className="bg-white border-b ">
+          {games.map((item, i) => (
+            <tr key={i} className="bg-white border-b ">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium whitespace-nowrap "

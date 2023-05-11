@@ -60,10 +60,10 @@ const Nav = () => {
         ) : (
           <>
             {providers &&
-              Object.values(providers).map((provider) => (
+              Object.values(providers).map((provider, key) => (
                 <button
                   type="button"
-                  key={provider.name}
+                  key={key}
                   onClick={() => {
                     signIn(provider.id);
                   }}
@@ -131,10 +131,11 @@ const Nav = () => {
         ) : (
           <>
             {providers &&
-              Object.values(providers).map((provider) => (
+              Object.values(providers).map((provider, key) => (
                 <button
+                  key={key}
                   type="button"
-                  key={provider.name}
+                  // key={provider.name}
                   onClick={() => {
                     signIn(provider.id);
                   }}
