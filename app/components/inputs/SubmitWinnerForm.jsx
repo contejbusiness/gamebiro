@@ -3,13 +3,24 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
-const SubmitWinnerForm = () => {
+const SubmitWinnerForm = ({ gameId }) => {
   const [inputNumber, setInputNumber] = useState("");
 
-  const submitNumber = () => {
+  const submitNumber = async () => {
     if (!inputNumber) toast.error("Enter Winner Number");
     else {
-        
+      const response = await fetch("/api/admin/submitwinner", {
+        method: "POST",
+        body: JSON.stringify({
+          gameId,
+          gameNumber: inputNumber,
+        }),
+      });
+      if (response.ok) {
+        toast.success("Winner Submitted");
+      } else {
+        toast.error("Failed to submit winner");
+      }
     }
   };
 
@@ -34,9 +45,16 @@ const SubmitWinnerForm = () => {
           type="text"
           id="input-group-1"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Enter Bank No. / UPI ID / Wallet Number"
+          placeholder="Enter Winner Number"
         />
       </div>
+
+      <button
+        className="py-2 w-full rounded bg-blue-500 shadow-lg text-white"
+        onClick={submitNumber}
+      >
+        Submit Winner
+      </button>
     </div>
   );
 };
