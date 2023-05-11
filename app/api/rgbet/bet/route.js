@@ -65,12 +65,6 @@ export const POST = async (request) => {
       );
     }
 
-    // Calculate the commission to deduct
-    const commission = (betAmount * 5) / 100;
-
-    // Calculate the payout amount
-    // const payout = (betAmount - commission) * game.odds[betNumber];
-
     // Create a new user bet in the database
     const userBet = new Bet({
       userId,
