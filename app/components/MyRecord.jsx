@@ -80,11 +80,10 @@ const MyRecord = () => {
             </div>
             <div className="flex items-center gap-4 my-5">
               <div className="">Bets</div>
-              <div className="flex items-center">
+              <div className="grid grid-cols-5 gap-3">
                 {value.map((item, i) => (
-                  <div key={i} className="border px-4 py-2 gap-2 flex">
-                    {/* {`Bet Number : ${item.betNumber} - `}{" "} */}
-                    <span>{item.betNumber} : </span>
+                  <div key={i} className="border px-4 py-2 gap-2 flex flex-col items-center">
+                    <span className="border-b">{item.betNumber}</span>
                     <span className="text-green-500">₹{item.betAmount}</span>
                   </div>
                 ))}

@@ -11,7 +11,7 @@ export const POST = async (request) => {
     // Set up a loop to create new games every minute
     intervalId = setInterval(() => {
       createNewGame();
-    }, 60 * 1000);
+    }, 60 * 5000);
   } catch (error) {
     return new Response(JSON.stringify("Failed to create game"), {
       status: 500,
@@ -32,7 +32,7 @@ const createNewGame = async () => {
 
     // Calculate the start and end times for the game
     const startTime = moment();
-    const endTime = moment().add(1, "minutes");
+    const endTime = moment().add(5, "minutes");
 
     // Create a new game in the database
     const game = new RGBet({

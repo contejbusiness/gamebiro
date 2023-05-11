@@ -77,34 +77,78 @@ const GridGame = () => {
   const handleOnSubmit = async (amount) => {
     setIsLoading(true);
     try {
-      if (session?.user?.email) {
-        const response = await fetch("/api/rgbet/bet", {
-          method: "POST",
-          body: JSON.stringify({
-            userId: session.user?.id,
-            gameId: game?._id,
-            betNumber: betValue,
-            betAmount: amount,
-          }),
-        });
+      if (betValue != "green" && betValue != "blue" && betValue != "red") {
+        if (session?.user?.email) {
+          const response = await fetch("/api/rgbet/bet", {
+            method: "POST",
+            body: JSON.stringify({
+              userId: session.user?.id,
+              gameId: game?._id,
+              betNumber: betValue,
+              betAmount: amount,
+            }),
+          });
 
-        if (response.ok) {
-          toast.success("Bet Placed");
-          console.log("Bet SUBMITTED");
+          if (response.ok) {
+            toast.success("Bet Placed");
+            console.log("Bet SUBMITTED");
+          } else {
+            const data = await response.json();
+
+            toast.error(data);
+          }
+
+          setShow(false);
+          setBetValue("");
         } else {
-          const data = await response.json();
-
-          toast.error(data);
+          toast.error("Please Login to play");
         }
-
-        setShow(false);
-        setBetValue("");
       } else {
-        toast.error("Please Login to play");
+        if (betValue == "green") {
+          const requests = [2, 4, 6, 7].map((value) =>
+            fetch("/api/rgbet/bet", {
+              method: "POST",
+              body: JSON.stringify({
+                userId: session?.user?.id,
+                gameId: game?._id,
+                betNumber: value,
+                betAmount: amount / 4,
+              }),
+            })
+          );
+          await Promise.all(requests).then(() => toast.success("Bet Placed"));
+        } else if (betValue == "red") {
+          const requests = [1, 3, 7, 9].map((value) =>
+            fetch("/api/rgbet/bet", {
+              method: "POST",
+              body: JSON.stringify({
+                userId: session?.user?.id,
+                gameId: game?._id,
+                betNumber: value,
+                betAmount: amount / 4,
+              }),
+            })
+          );
+          await Promise.all(requests).then(() => toast.success("Bet Placed"));
+        } else {
+          const requests = [0, 5].map((value) =>
+            fetch("/api/rgbet/bet", {
+              method: "POST",
+              body: JSON.stringify({
+                userId: session?.user?.id,
+                gameId: game?._id,
+                betNumber: value,
+                betAmount: amount / 2,
+              }),
+            })
+          );
+          await Promise.all(requests).then(() => toast.success("Bet Placed"));
+        }
       }
     } catch (error) {
       console.error(error);
     } finally {
+      setShow(false);
       setIsLoading(false);
     }
   };
@@ -128,13 +172,22 @@ const GridGame = () => {
       </div>
 
       <div className="flex items-center justify-between my-10">
-        <button className="px-3 py-2 text-sm text-white bg-green-500 rounded shadow-lg">
+        <button
+          className="px-3 py-2 text-sm text-white bg-green-500 rounded shadow-lg"
+          onClick={() => handleNumberClick("green")}
+        >
           Join Green
         </button>
-        <button className="px-3 py-2 text-sm text-white bg-blue-500 rounded shadow-lg">
+        <button
+          className="px-3 py-2 text-sm text-white bg-blue-500 rounded shadow-lg"
+          onClick={() => handleNumberClick("blue")}
+        >
           Join Blue
         </button>
-        <button className="px-3 py-2 text-sm text-white bg-red-500 rounded shadow-lg">
+        <button
+          className="px-3 py-2 text-sm text-white bg-red-500 rounded shadow-lg"
+          onClick={() => handleNumberClick("red")}
+        >
           Join Red
         </button>
       </div>
