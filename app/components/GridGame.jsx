@@ -18,7 +18,7 @@ const GridGame = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [game, setGame] = useState({});
-  console.log("🚀 ~ file: GridGame.jsx:20 ~ GridGame ~ game:", game);
+
   const [seconds, setSeconds] = useState();
 
   const fetchGame = async () => {
@@ -38,13 +38,13 @@ const GridGame = () => {
       setGame(data);
     }
 
-    const currentTime = moment();
-    const endTime = moment(game.endTime);
+    // const currentTime = moment();
+    // const endTime = moment(game.endTime);
 
-    if (currentTime > endTime) {
-      console.log("GAME FINISHED. FETCHING NEW GAME DATA...");
-      fetchGame();
-    }
+    // if (currentTime > endTime) {
+    //   console.log("GAME FINISHED. FETCHING NEW GAME DATA...");
+    //   fetchGame();
+    // }
   };
 
   useEffect(() => {
@@ -59,11 +59,11 @@ const GridGame = () => {
     } else {
       checkForUpdates();
     }
-  }, [game, checkForUpdates]);
+  }, [game]);
 
   useEffect(() => {
     fetchGame();
-  }, [fetchGame]);
+  }, []);
 
   const handleNumberClick = async (number) => {
     try {

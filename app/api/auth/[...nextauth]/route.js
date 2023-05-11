@@ -22,12 +22,12 @@ const handler = NextAuth({
       session.user.balance = sessionUser.balance;
       return session;
     },
+
     async signIn({ account, profile, user, credentials }) {
       try {
         await connectToDB();
 
         let userExists = await User.findOne({ email: profile.email });
-      
 
         if (!userExists) {
           await User.create({

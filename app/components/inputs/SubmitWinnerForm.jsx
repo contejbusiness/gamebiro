@@ -5,21 +5,29 @@ import { toast } from "react-hot-toast";
 
 const SubmitWinnerForm = ({ gameId }) => {
   const [inputNumber, setInputNumber] = useState("");
+  const [isLoading, setIsLoading] = useState("");
 
   const submitNumber = async () => {
     if (!inputNumber) toast.error("Enter Winner Number");
     else {
-      const response = await fetch("/api/admin/submitwinner", {
-        method: "POST",
-        body: JSON.stringify({
-          gameId,
-          gameNumber: inputNumber,
-        }),
-      });
-      if (response.ok) {
-        toast.success("Winner Submitted");
-      } else {
-        toast.error("Failed to submit winner");
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/admin/submitwinner", {
+          method: "POST",
+          body: JSON.stringify({
+            gameId,
+            gameNumber: inputNumber,
+          }),
+        });
+        if (response.ok) {
+          toast.success("Winner Submitted");
+        } else {
+          toast.error("Failed to submit winner");
+        }
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -50,8 +58,10 @@ const SubmitWinnerForm = ({ gameId }) => {
       </div>
 
       <button
-        className="py-2 w-full rounded bg-blue-500 shadow-lg text-white"
-        onClick={submitNumber}
+        className={`py-2 w-full rounded shadow-lg text-white ${
+          isLoading ? "bg-gray-500" : "bg-blue-500"
+        }`}
+        onClick={() => submitNumber()}
       >
         Submit Winner
       </button>

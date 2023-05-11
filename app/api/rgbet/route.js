@@ -2,8 +2,28 @@ import moment from "moment";
 import RGBet from "@/schemas/rgbet";
 import { connectToDB } from "@/utils/database";
 
+let intervalId;
 
 export const POST = async (request) => {
+  try {
+    createNewGame();
+
+    // Set up a loop to create new games every minute
+    intervalId = setInterval(() => {
+      createNewGame();
+    }, 60 * 1000);
+  } catch (error) {
+    return new Response(JSON.stringify("Failed to create game"), {
+      status: 500,
+    });
+  }
+};
+
+export const PUT = async (request) => {
+  clearInterval(intervalId);
+};
+
+const createNewGame = async () => {
   try {
     await connectToDB();
     // Get the current game number
@@ -26,19 +46,53 @@ export const POST = async (request) => {
     await game.save();
     console.log("CREATED NEW GAME......");
 
-    // Set a timeout to calculate the result of the game
-    const timeout = endTime.diff(startTime);
-
-    setTimeout(() => {
-      POST(request);
-    }, timeout);
-
     return new Response(JSON.stringify(game));
   } catch (error) {
     console.error(error);
     return new Response("Internal Server Error", { status: 500, error: error });
   }
 };
+
+// Stop the game loop
+const stopGameLoop = () => {
+  clearInterval(intervalId);
+};
+
+// export const POST = async (request) => {
+//   try {
+//     await connectToDB();
+//     // Get the current game number
+//     const lastGame = await RGBet.findOne().sort({ gameCount: -1 });
+//     const gameNumber = lastGame ? lastGame.gameCount + 1 : 1;
+
+//     // Calculate the start and end times for the game
+//     const startTime = moment();
+//     const endTime = moment().add(1, "minutes");
+
+//     // Create a new game in the database
+//     const game = new RGBet({
+//       prizePercentage: 90,
+//       gameCount: gameNumber,
+//       startTime: startTime.toDate(),
+//       endTime: endTime.toDate(),
+//       result: "waiting",
+//     });
+
+//     await game.save();
+//     console.log("CREATED NEW GAME......");
+
+//     const timeout = endTime.diff(startTime);
+
+//     setTimeout(() => {
+//       POST(request);
+//     }, timeout);
+
+//     return new Response(JSON.stringify(game));
+//   } catch (error) {
+//     console.error(error);
+//     return new Response("Internal Server Error", { status: 500, error: error });
+//   }
+// };
 
 // export const POST = async (request) => {
 //   try {

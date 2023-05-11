@@ -7,7 +7,7 @@ import SubmitWinnerForm from "../components/inputs/SubmitWinnerForm";
 
 const Page = () => {
   const [currentGame, setCurrentGame] = useState({});
-  console.log("🚀 ~ file: page.jsx:11 ~ Page ~ currentGame:", currentGame);
+
   const [gameBets, setGameBets] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(1);
@@ -95,7 +95,7 @@ const Page = () => {
 
   useEffect(() => {
     fetchCurrentGame();
-  }, [fetchCurrentGame]);
+  }, []);
 
   return (
     <div className="px-4">
@@ -181,14 +181,17 @@ const Page = () => {
           </div>
         </div>
 
-        {recentGames.result === "PENDING" ? (
+        {recentGames.result === "waiting" ? (
           <div>
-            {" "}
             <p className="text-xl py-6">No Bets Placed Yet...</p>
           </div>
         ) : (
           <div>Hello</div>
         )}
+
+        <div>
+          {recentGames && <SubmitWinnerForm gameId={recentGames?._id} />}
+        </div>
 
         <div className="flex justify-center mt-4">
           <button
