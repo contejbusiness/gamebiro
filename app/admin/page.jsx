@@ -8,7 +8,7 @@ import RecentGames from "../components/RecentGames";
 
 const Page = () => {
   const [currentGame, setCurrentGame] = useState({});
-  console.log("🚀 ~ file: page.jsx:11 ~ Page ~ currentGame:", currentGame)
+  console.log("🚀 ~ file: page.jsx:11 ~ Page ~ currentGame:", currentGame);
   const [gameBets, setGameBets] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(1);
@@ -123,8 +123,8 @@ const Page = () => {
         <div>
           <div className="grid grid-cols-5 gap-3">
             {gameBets ? (
-              gameBets.map((bet) => (
-                <div className="flex flex-col items-center justify-center py-2 border rounded gap-2">
+              gameBets.map((bet, i) => (
+                <div key={i} className="flex flex-col items-center justify-center py-2 border rounded gap-2">
                   <div className="border-b">{bet.betNumber}</div>
                   <div className="text-blue-500 font-bold">
                     ₹{bet.betAmount}
@@ -162,8 +162,11 @@ const Page = () => {
           </p>
           <div className="grid grid-cols-5 gap-3 my-2">
             {recentGameBets ? (
-              recentGameBets.map((bet) => (
-                <div className="flex flex-col items-center justify-center py-2 border rounded gap-2">
+              recentGameBets.map((bet, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col items-center justify-center py-2 border rounded gap-2"
+                >
                   <div className="border-b">{bet.betNumber}</div>
                   <div className="text-blue-500 font-bold">
                     ₹{bet.betAmount}
