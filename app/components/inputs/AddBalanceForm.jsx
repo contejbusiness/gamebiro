@@ -1,6 +1,41 @@
 "use client";
 
-const AddBalanceForm = ({ hintText }) => {
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+
+const AddBalanceForm = () => {
+  const [email, setEmail] = useState("");
+  const [amount, setAmount] = useState("");
+
+  const updateBalance = async () => {
+    try {
+      const response = await fetch("/api/admin/user/updatebalance", {
+        method: "PUT",
+        body: JSON.stringify({
+          email,
+          amount,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Balance Updated");
+      } else {
+        toast.error(data);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!email || !amount) toast.error("Enter Email and Amount");
+    else {
+      updateBalance();
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-5 my-4">
       <div className="relative">
@@ -17,6 +52,8 @@ const AddBalanceForm = ({ hintText }) => {
           </svg>
         </div>
         <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           type="text"
           id="input-group-1"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -38,6 +75,8 @@ const AddBalanceForm = ({ hintText }) => {
           </svg>
         </div>
         <input
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
           type="text"
           id="input-group-1"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -45,7 +84,10 @@ const AddBalanceForm = ({ hintText }) => {
         />
       </div>
 
-      <button className="w-full py-2 bg-blue-500 shadow-lg rounded-lg text-white">
+      <button
+        className="w-full py-2 bg-blue-500 shadow-lg rounded-lg text-white"
+        onClick={() => handleSubmit()}
+      >
         Add Balance
       </button>
     </div>
