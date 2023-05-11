@@ -15,13 +15,13 @@ const GridGame = () => {
 
   const [show, setShow] = useState(false);
   const [betValue, setBetValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [game, setGame] = useState({});
   console.log("🚀 ~ file: GridGame.jsx:20 ~ GridGame ~ game:", game);
   const [seconds, setSeconds] = useState();
 
   const fetchGame = async () => {
-    console.log("FETCH FUNCTION IS CALLED");
     const response = await fetch("/api/rgbet", { method: "GET" });
     const data = await response.json();
     setGame(data);
@@ -52,7 +52,7 @@ const GridGame = () => {
       checkForUpdates();
     }
     return () => clearInterval(interval);
-  }, [ game]);
+  }, [game]);
 
   useEffect(() => {
     fetchGame();
@@ -73,6 +73,7 @@ const GridGame = () => {
   };
 
   const handleOnSubmit = async (amount) => {
+    setIsLoading(true);
     try {
       const response = await fetch("/api/rgbet/bet", {
         method: "POST",
@@ -83,6 +84,7 @@ const GridGame = () => {
           betAmount: amount,
         }),
       });
+
       if (response.ok) {
         toast.success("Bet Placed");
         console.log("Bet SUBMITTED");
@@ -96,6 +98,8 @@ const GridGame = () => {
       setBetValue("");
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -151,6 +155,7 @@ const GridGame = () => {
         onShow={show}
         onCancel={handleOnCancel}
         onConfirm={handleOnSubmit}
+        isLoading={isLoading}
       />
     </div>
   );

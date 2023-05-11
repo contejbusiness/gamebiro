@@ -2,9 +2,8 @@
 
 import React, { useState } from "react";
 
-const Model = ({ title, onConfirm, onCancel, onShow }) => {
+const Model = ({ title, onConfirm, onCancel, onShow, isLoading }) => {
   const [count, setCount] = useState(1);
-  const [total, setTotal] = useState(10);
 
   const [active, setActive] = useState(10);
 
@@ -73,8 +72,11 @@ const Model = ({ title, onConfirm, onCancel, onShow }) => {
                   Cancel
                 </button>
                 <button
-                  className="flex-1 px-4 py-2 bg-blue-500 rounded shadow"
+                  className={`flex-1 px-4 py-2 rounded shadow ${
+                    isLoading ? "bg-gray-500" : "bg-blue-500"
+                  }`}
                   onClick={() => onConfirm(active * count)}
+                  disabled={isLoading}
                 >
                   Confirm
                 </button>

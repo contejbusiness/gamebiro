@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import moment from "moment";
 import RGBet from "@/schemas/rgbet";
 import Bet from "@/schemas/bet";
@@ -9,16 +8,9 @@ export const POST = async (request) => {
   try {
     // Get the user ID and bet information from the request
 
-    console.log("GET ALL BET ROUTE")
+    console.log("GET ALL BET ROUTE");
 
     const { userId, gameId, betNumber, betAmount } = await request.json();
-    console.log(
-      "🚀 ~ file: route.js:13 ~ POST ~ userId, gameId, betNumber, betAmount:",
-      userId,
-      gameId,
-      betNumber,
-      betAmount
-    );
 
     await connectToDB();
 
@@ -36,10 +28,7 @@ export const POST = async (request) => {
     const startTime = moment(game.startTime);
     const endTime = moment(game.endTime);
     if (now.isBefore(startTime) || now.isAfter(endTime)) {
-      console.log("TIMEOUT");
-      return new Response(JSON.stringify({ message: "Betting closed" }), {
-        status: 403,
-      });
+      return new Response(JSON.stringify("Betting closed"), { status: 403 });
     }
 
     // Check if the bet number is valid
