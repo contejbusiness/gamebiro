@@ -3,7 +3,7 @@ import User from "@/schemas/user";
 
 export const POST = async (request) => {
   try {
-    connectToDB();
+    // connectToDB();
 
     const { gameId, gameNumber } = await request.json();
     return new Response(
