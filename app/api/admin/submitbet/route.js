@@ -4,23 +4,24 @@ import { connectToDB } from "@/utils/database";
 
 export const POST = async (request) => {
   try {
-     connectToDB();
+    connectToDB();
 
     const { gameId, gameNumber } = await request.json();
+
+    if (!gameId)
+      return new Response(JSON.stringify("Game Id Not Found"), { status: 404 });
+
+    const game = await RGBet.findById(gameId).populate({
+      path: "bets",
+      model: "Bet",
+    });
+
     return new Response(
       JSON.stringify({
-        gameId,
-        gameNumber,
+        game,
       }),
       { status: 200 }
     );
-    // if (!gameId)
-    //   return new Response(JSON.stringify("Game Id Not Found"), { status: 404 });
-
-    // const game = await RGBet.findById(gameId).populate({
-    //   path: "bets",
-    //   model: "Bet",
-    // });
 
     // if (!game)
     //   return new Response(JSON.stringify("Game Not Found"), { status: 404 });
