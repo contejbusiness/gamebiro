@@ -61,7 +61,7 @@ const Page = () => {
           Redeem Requests by mail ids
         </p>
 
-        {redeems.map((redeem, i) => (
+        {redeems?.map((redeem, i) => (
           <div key={i} className="flex items-center justify-between border-b">
             <div className="">
               <p className="text-xs my-2">

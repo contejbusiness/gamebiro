@@ -59,29 +59,30 @@ const Record = () => {
           </tr>
         </thead>
         <tbody>
-          {games.map((item, i) => (
-            <tr key={i} className="bg-white border-b ">
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium whitespace-nowrap "
-              >
-                {item?.gameCount}
-              </th>
-              <td className="px-6 py-4">{32345}</td>
-              <td className="px-6 py-4">
-                {item?.result ? item?.result : "waiting..."}
-              </td>
-              <td className={`px-6 py-4`}>
-                {item?.result == 5 || item?.result == 0 ? (
-                  <div className="p-2 bg-blue-500 rounded-full w-2 h-2" />
-                ) : item?.result % 2 == 0 ? (
-                  <div className="p-2 bg-green-500 rounded-full w-2 h-2" />
-                ) : (
-                  <div className="p-2 bg-red-500 rounded-full w-2 h-2" />
-                )}
-              </td>
-            </tr>
-          ))}
+          {games &&
+            games?.map((item, i) => (
+              <tr key={i} className="bg-white border-b ">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium whitespace-nowrap "
+                >
+                  {item?.gameCount}
+                </th>
+                <td className="px-6 py-4">{32345}</td>
+                <td className="px-6 py-4">
+                  {item?.result ? item?.result : "waiting..."}
+                </td>
+                <td className={`px-6 py-4`}>
+                  {item?.result == 5 || item?.result == 0 ? (
+                    <div className="p-2 bg-blue-500 rounded-full w-2 h-2" />
+                  ) : item?.result % 2 == 0 ? (
+                    <div className="p-2 bg-green-500 rounded-full w-2 h-2" />
+                  ) : (
+                    <div className="p-2 bg-red-500 rounded-full w-2 h-2" />
+                  )}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <div className="flex justify-center mt-4">

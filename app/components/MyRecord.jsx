@@ -70,7 +70,7 @@ const MyRecord = () => {
 
   return (
     <div className=" p-4 w-full">
-      {currentRecords.map((value, i) => {
+      {currentRecords && currentRecords?.map((value, i) => {
         return (
           <div key={i} className="border-b">
             <div className="flex items-center justify-between bg-blue-200 py-2 px-4 text-xs font-bold">
@@ -97,7 +97,7 @@ const MyRecord = () => {
             <div className="flex items-center gap-4 my-5">
               <div className="">Bets</div>
               <div className="grid grid-cols-5 gap-3">
-                {value.map((item, i) => (
+                {value?.map((item, i) => (
                   <div
                     key={i}
                     className="border px-4 py-2 gap-2 flex flex-col items-center"
@@ -112,7 +112,7 @@ const MyRecord = () => {
         );
       })}
       <div className="flex justify-center items-center mt-4">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page, i) => (
+        {Array.from({ length: totalPages }, (_, i) => i + 1)?.map((page, i) => (
           <button
             key={i}
             className={`px-3 py-1 rounded ${

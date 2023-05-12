@@ -60,7 +60,7 @@ const Nav = () => {
         ) : (
           <>
             {providers &&
-              Object.values(providers).map((provider, key) => (
+              Object.values(providers)?.map((provider, key) => (
                 <button
                   type="button"
                   key={key}
@@ -131,7 +131,7 @@ const Nav = () => {
         ) : (
           <>
             {providers &&
-              Object.values(providers).map((provider, key) => (
+              Object.values(providers)?.map((provider, key) => (
                 <button
                   key={key}
                   type="button"

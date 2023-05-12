@@ -184,7 +184,7 @@ const GridGame = () => {
       </div>
 
       <div className="grid grid-cols-5 gap-4">
-        {[...Array(10)].map((_, i) => (
+        {[...Array(10)]?.map((_, i) => (
           <button
             key={i}
             onClick={() => handleNumberClick(i)}

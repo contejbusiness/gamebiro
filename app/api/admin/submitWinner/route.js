@@ -28,7 +28,7 @@ export async function PUT(request) {
     const filterBets = game.bets.filter((bet) => bet.betNumber == gameNumber);
 
     const response = await Promise.all(
-      filterBets.map(async (bet) => {
+      filterBets?.map(async (bet) => {
         const user = await User.findById(bet.userId);
         const totalAmount = bet.betAmount;
         user.balance += totalAmount;
