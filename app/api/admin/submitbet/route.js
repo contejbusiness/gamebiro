@@ -1,9 +1,10 @@
 import RGBet from "@/schemas/rgbet";
 import User from "@/schemas/user";
+import { connectToDB } from "@/utils/database";
 
 export const POST = async (request) => {
   try {
-    // connectToDB();
+     connectToDB();
 
     const { gameId, gameNumber } = await request.json();
     return new Response(
