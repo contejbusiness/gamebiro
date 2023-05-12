@@ -57,7 +57,7 @@ const GridGame = () => {
   //   fetchGame();
   // }, []);
 
-  const { game } = useGame();
+  const { game, getLatestGame } = useGame();
   console.log("🚀 ~ file: GridGame.jsx:61 ~ GridGame ~ game:", game);
 
   const handleNumberClick = async (number) => {
@@ -116,7 +116,15 @@ const GridGame = () => {
               }),
             })
           );
-          await Promise.all(requests).then(() => toast.success("Bet Placed"));
+          await Promise.all(requests).then((responses) => {
+            responses.forEach(async (response) => {
+              if (response.ok) toast.success("Bet Placed");
+              else {
+                const data = await response.json();
+                toast.error(data);
+              }
+            });
+          });
         } else if (betValue == "red") {
           const requests = [1, 3, 7, 9].map((value) =>
             fetch("/api/rgbet/bet", {
@@ -129,7 +137,16 @@ const GridGame = () => {
               }),
             })
           );
-          await Promise.all(requests).then(() => toast.success("Bet Placed"));
+
+          requests.forEach(async (request) => {
+            const response = await request;
+            if (response.ok) {
+              toast.success("Bet Placed");
+            } else {
+              const data = await response.json();
+              toast.error(data);
+            }
+          });
         } else {
           const requests = [0, 5].map((value) =>
             fetch("/api/rgbet/bet", {
@@ -142,7 +159,15 @@ const GridGame = () => {
               }),
             })
           );
-          await Promise.all(requests).then(() => toast.success("Bet Placed"));
+          await Promise.all(requests).then((responses) => {
+            responses.forEach(async (response) => {
+              if (response.ok) toast.success("Bet Placed");
+              else {
+                const data = await response.json();
+                toast.error(data);
+              }
+            });
+          });
         }
       }
     } catch (error) {
@@ -160,6 +185,12 @@ const GridGame = () => {
           <div className="flex items-center gap-3">
             <GiTrophyCup size={18} />
             <span className="text-sm">Period</span>
+            <button
+              className="rounded-full bg-blue-500 text-white px-2 py-1 text-xs"
+              onClick={() => getLatestGame()}
+            >
+              Refresh
+            </button>
           </div>
           <span className="text-xl">{game?.gameCount}</span>
         </div>

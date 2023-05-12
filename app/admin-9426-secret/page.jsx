@@ -7,18 +7,16 @@ import SubmitWinnerForm from "../components/inputs/SubmitWinnerForm";
 
 const Page = () => {
   const [currentGame, setCurrentGame] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const [gameBets, setGameBets] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(1);
+  const [status, setStatus] = useState("Stopped");
 
   const [recentGames, setRecentGames] = useState([]);
 
   const [recentGameBets, setRecentGamesBets] = useState([]);
-  console.log(
-    "🚀 ~ file: page.jsx:17 ~ Page ~ recentGameBets:",
-    recentGameBets
-  );
 
   const fetchRecentGames = async () => {
     try {
@@ -93,12 +91,69 @@ const Page = () => {
     }
   };
 
+  const startGame = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/rgbet", { method: "POST" });
+
+      if (response.ok) {
+        setStatus("Started");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const endGame = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/rgbet", { method: "PUT" });
+      if (response.ok) {
+        setStatus("Stopped");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchCurrentGame();
   }, []);
 
   return (
     <div className="px-4">
+      <div className="flex items-center gap-4 justify-between">
+        <div className="flex items-center gap-4">
+          <button
+            disabled={isLoading}
+            className={`text-xs rounded-full px-2 py-1 my-5 bg-blue-500 text-white ${
+              isLoading ? "bg-gray-500" : "bg-blue-500"
+            }`}
+            onClick={() => {
+              startGame();
+            }}
+          >
+            Start Game
+          </button>
+          <button
+            disabled={isLoading}
+            className={`text-xs rounded-full px-2 py-1 my-5 bg-blue-500 text-white ${
+              isLoading ? "bg-gray-500" : "bg-blue-500"
+            }`}
+            onClick={() => {
+              endGame();
+            }}
+          >
+            End Game
+          </button>
+        </div>
+        <p className="text-xs">{status}</p>
+      </div>
+
       <div className="flex flex-col gap-2 w-full border-b pb-4">
         <h2 className="text-lg">Add Balance</h2>
         <p className="text-xs text-slate-500">
@@ -115,9 +170,6 @@ const Page = () => {
         <p className="text-xs text-slate-500 mb-4">
           Game will announce result randomly if not announced by you
         </p>
-        {/* <p className="text-xs text-blue-400 my-2">
-          Make sure to announce result 15 seconds before the game ends
-        </p> */}
 
         <div>
           <div className="grid grid-cols-5 gap-3">
@@ -181,16 +233,10 @@ const Page = () => {
           </div>
         </div>
 
-        {recentGames.result === "waiting" ? (
-          <div>
-            <p className="text-xl py-6">No Bets Placed Yet...</p>
-          </div>
-        ) : (
-          <div>Hello</div>
-        )}
-
         <div>
-          {recentGames && <SubmitWinnerForm gameId={recentGames?._id} />}
+          {recentGames?.result == "waiting" && (
+            <SubmitWinnerForm gameId={recentGames?._id} />
+          )}
         </div>
 
         <div className="flex justify-center mt-4">

@@ -25,11 +25,9 @@ const useGame = () => {
 
   useEffect(() => {
     getLatestGame();
-
-    
   }, []);
 
-  return { game };
+  return { game, getLatestGame };
 };
 
 export default useGame;
