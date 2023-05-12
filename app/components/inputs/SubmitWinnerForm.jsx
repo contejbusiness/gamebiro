@@ -22,6 +22,8 @@ const SubmitWinnerForm = ({ gameId }) => {
         if (response.ok) {
           toast.success("Winner Submitted");
         } else {
+          const data = await response.json();
+          console.log(data);
           toast.error("Failed to submit winner");
         }
       } catch (error) {

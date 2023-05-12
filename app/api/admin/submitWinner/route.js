@@ -10,11 +10,6 @@ export const POST = async (request) => {
 
     const { gameId, gameNumber } = await request.json();
 
-    console.log(
-      "🚀 ~ file: route.js:7 ~ POST ~ gameId, betNumber:",
-      gameId,
-      gameNumber
-    );
 
     if (!gameId)
       return new Response(JSON.stringify("Game Id Not Found", { status: 404 }));
