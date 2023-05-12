@@ -29,19 +29,22 @@ const MyRecord = () => {
   };
 
   let grouped = {};
-
-  if (records?.length > 0) {
-    grouped = records.reduce((acc, obj) => {
-      const key = obj.gameId._id;
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(obj);
-      return acc;
-    }, {});
+  try {
+    if (records?.length > 0) {
+      grouped = records.reduce((acc, obj) => {
+        const key = obj.gameId._id;
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(obj);
+        return acc;
+      }, {});
+    }
+  } catch (error) {
+    console.log(error);
   }
 
-  let totalRecords = Object.keys(grouped).length;
+  let totalRecords = Object.keys(grouped)?.length;
   let totalPages = Math.ceil(totalRecords / PAGE_SIZE);
 
   const handleClick = (pageNumber) => {
