@@ -1,3 +1,6 @@
+import RGBet from "@/schemas/rgbet";
+import User from "@/schemas/user";
+
 export const POST = async (request) => {
   try {
     connectToDB();
