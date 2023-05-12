@@ -8,8 +8,6 @@ export const POST = async (request) => {
   try {
     // Get the user ID and bet information from the request
 
-    console.log("GET ALL BET ROUTE");
-
     const { userId, gameId, betNumber, betAmount } = await request.json();
 
     await connectToDB();
@@ -20,7 +18,7 @@ export const POST = async (request) => {
       .exec();
 
     if (!game) {
-      return new Response("Game not found", { status: 404 });
+      return new Response(JSON.stringify("Game not found"), { status: 404 });
     }
 
     // Check if betting is still open
@@ -33,7 +31,9 @@ export const POST = async (request) => {
 
     // Check if the bet number is valid
     if (betNumber < 0 || betNumber > 9) {
-      return new Response("Invalid bet number", { status: 400 });
+      return new Response(JSON.stringify("Invalid bet number"), {
+        status: 400,
+      });
     }
 
     const user = await User.findById(userId);
@@ -49,8 +49,10 @@ export const POST = async (request) => {
     });
     if (existingBet) {
       return new Response(
-        "You have already placed a bet on this number for this game",
-        { status: 400 }
+        JSON.stringify(
+          " You have already placed a bet on this number for this game"
+        ),
+        { status: 403 }
       );
     }
 
