@@ -18,47 +18,7 @@ const GridGame = () => {
   const [betValue, setBetValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // const [game, setGame] = useState({});
-
-  // const [seconds, setSeconds] = useState();
-
-  // const fetchGame = async () => {
-  //   const response = await fetch("/api/rgbet", { method: "GET" });
-  //   const data = await response.json();
-  //   setGame(data);
-  //   setSeconds(Math.floor(moment(game?.endTime).diff(moment()) / 1000) + 10000);
-  // };
-
-  // const checkForUpdates = async () => {
-  //   console.log("UPDATE FUNCTION IS CALLED");
-  //   const response = await fetch("/api/rgbet", { method: "GET" });
-  //   const data = await response.json();
-
-  //   if (JSON.stringify(data) !== JSON.stringify(game)) {
-  //     setGame(data);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   console.log("IS PROBLEM");
-  //   let s = Math.floor(moment(game?.endTime).diff(moment()) / 1000) + 5000;
-  //   let interval = null;
-  //   if (s > 0) {
-  //     interval = setInterval(() => {
-  //       setSeconds(seconds - 1);
-  //       s -= 1;
-  //     }, 1000);
-  //   } else {
-  //     checkForUpdates();
-  //   }
-  // }, [game]);
-
-  // useEffect(() => {
-  //   fetchGame();
-  // }, []);
-
   const { game, getLatestGame } = useGame();
-  console.log("🚀 ~ file: GridGame.jsx:61 ~ GridGame ~ game:", game);
 
   const handleNumberClick = async (number) => {
     try {

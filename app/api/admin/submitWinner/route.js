@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import Bet from "@/schemas/bet";
 
 import RGBet from "@/schemas/rgbet";
 
@@ -36,8 +36,8 @@ export async function PUT(request) {
       })
     );
 
-    return NextResponse.json({message: "Result Updated"});
+    return new Response(JSON.stringify("Success"), { status: 200 });
   } catch (error) {
-    return new Response(JSON.stringify(error.message), { status: 500 });
+    return new Response(JSON.stringify(error), { status: 500 });
   }
 }

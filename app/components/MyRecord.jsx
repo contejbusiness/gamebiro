@@ -10,14 +10,17 @@ const MyRecord = () => {
   const [records, setRecords] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const grouped = records.reduce((acc, obj) => {
-    const key = obj.gameId._id;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(obj);
-    return acc;
-  }, {});
+  let grouped;
+  if (records?.length > 0) {
+    grouped = records?.reduce((acc, obj) => {
+      const key = obj.gameId._id;
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(obj);
+      return acc;
+    }, {});
+  }
 
   const totalRecords = Object.keys(grouped).length;
   const totalPages = Math.ceil(totalRecords / PAGE_SIZE);
@@ -82,7 +85,10 @@ const MyRecord = () => {
               <div className="">Bets</div>
               <div className="grid grid-cols-5 gap-3">
                 {value.map((item, i) => (
-                  <div key={i} className="border px-4 py-2 gap-2 flex flex-col items-center">
+                  <div
+                    key={i}
+                    className="border px-4 py-2 gap-2 flex flex-col items-center"
+                  >
                     <span className="border-b">{item.betNumber}</span>
                     <span className="text-green-500">₹{item.betAmount}</span>
                   </div>
