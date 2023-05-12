@@ -10,9 +10,8 @@ export const POST = async (request) => {
 
     const { gameId, gameNumber } = await request.json();
 
-
     if (!gameId)
-      return new Response(JSON.stringify("Game Id Not Found", { status: 404 }));
+      return new Response(JSON.stringify("Game Id Not Found"), { status: 404 });
 
     const game = await RGBet.findById(gameId).populate({
       path: "bets",
@@ -20,7 +19,7 @@ export const POST = async (request) => {
     });
 
     if (!game)
-      return new Response(JSON.stringify("Game Not Found", { status: 404 }));
+      return new Response(JSON.stringify("Game Not Found"), { status: 404 });
 
     game.result = gameNumber;
     await game.save();
@@ -42,7 +41,7 @@ export const POST = async (request) => {
         await user.save();
       })
     );
-    console.log("🚀 ~ file: route.js:50 ~ POST ~ response:", response)
+    console.log("🚀 ~ file: route.js:50 ~ POST ~ response:", response);
 
     // Update the balance of all users who bet on the bet number
     // try {
@@ -54,7 +53,7 @@ export const POST = async (request) => {
     //   console.log(error);
     // }
 
-    return new Response("Result Announced", { status: 200 });
+    return new Response(JSON.stringify("Result Announced"), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify(error.message), { status: 500 });
   }
