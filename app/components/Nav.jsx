@@ -32,7 +32,7 @@ const Nav = () => {
           height={30}
           className="object-contain"
         />
-        <p className="text-sm ml-2">GameBiro</p>
+        <p className="text-sm ml-2">Easy Earn</p>
       </Link>
 
       {/* Desktop Navigation */}
