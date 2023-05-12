@@ -16,18 +16,18 @@ export const POST = async (request) => {
       model: "Bet",
     });
 
+    if (!game)
+      return new Response(JSON.stringify("Game Not Found"), { status: 404 });
+
+    game.result = gameNumber;
+    await game.save();
+
     return new Response(
       JSON.stringify({
         game,
       }),
       { status: 200 }
     );
-
-    // if (!game)
-    //   return new Response(JSON.stringify("Game Not Found"), { status: 404 });
-
-    // game.result = gameNumber;
-    // await game.save();
 
     // const filterBets = game.bets.filter((bet) => bet.betNumber == gameNumber);
 
