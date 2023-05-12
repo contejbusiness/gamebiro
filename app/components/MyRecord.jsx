@@ -13,7 +13,7 @@ const MyRecord = () => {
   let grouped;
   if (records?.length > 0) {
     grouped = records?.reduce((acc, obj) => {
-      const key = obj?.gameId?._id;
+      const key = obj?.gameId._id;
       if (!acc[key]) {
         acc[key] = [];
       }
@@ -22,12 +22,8 @@ const MyRecord = () => {
     }, {});
   }
 
-  let totalRecords;
-  let totalPages;
-  if (grouped && records?.length > 0) {
-    totalRecords = Object.keys(grouped).length;
-    Math.ceil(totalRecords / PAGE_SIZE);
-  }
+  let totalRecords = Object?.keys(records?.length > 0 ? grouped : {}).length;
+  let totalPages = Math.ceil(totalRecords / PAGE_SIZE);
 
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -55,62 +51,57 @@ const MyRecord = () => {
     fetchMyGameRecords();
   }, [session?.user]);
 
-  let startIndex;
-  let endIndex;
-  let currentRecords;
-
-  if (grouped) {
-    startIndex = (currentPage - 1) * PAGE_SIZE;
-    endIndex = startIndex + PAGE_SIZE;
-    currentRecords = Object.values(grouped ? grouped : {}).slice(
-      startIndex,
-      endIndex
-    );
-  }
+  let startIndex = (currentPage - 1) * PAGE_SIZE;
+  let endIndex = startIndex + PAGE_SIZE;
+  let currentRecords = Object.values(grouped ? grouped : {}).slice(
+    startIndex,
+    endIndex
+  );
 
   return (
     <div className=" p-4 w-full">
-      {currentRecords && currentRecords?.map((value, i) => {
-        return (
-          <div key={i} className="border-b">
-            <div className="flex items-center justify-between bg-blue-200 py-2 px-4 text-xs font-bold">
-              <div className="flex items-center gap-3">
-                <span>PERIOD</span>
-                <span>{value[0]?.gameId?.gameCount}</span>
+      {currentRecords &&
+        currentRecords?.map((value, i) => {
+          return (
+            <div key={i} className="border-b">
+              <div className="flex items-center justify-between bg-blue-200 py-2 px-4 text-xs font-bold">
+                <div className="flex items-center gap-3">
+                  <span>PERIOD</span>
+                  <span>{value[0]?.gameId?.gameCount}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span>RESULT</span>
+                  <span>{value[0]?.gameId?.result}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <span>RESULT</span>
-                <span>{value[0]?.gameId?.result}</span>
+              <div className="flex items-center justify-between">
+                <p className="text-xs my-3">
+                  5% Commission is charged for each bet
+                </p>
+                <button
+                  onClick={() => handleRefresh()}
+                  className="text-white bg-blue-500  px-2 py-1 text-xs rounded-full shadow"
+                >
+                  Refresh
+                </button>
+              </div>
+              <div className="flex items-center gap-4 my-5">
+                <div className="">Bets</div>
+                <div className="grid grid-cols-5 gap-3">
+                  {value?.map((item, i) => (
+                    <div
+                      key={i}
+                      className="border px-4 py-2 gap-2 flex flex-col items-center"
+                    >
+                      <span className="border-b">{item.betNumber}</span>
+                      <span className="text-green-500">₹{item.betAmount}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <p className="text-xs my-3">
-                5% Commission is charged for each bet
-              </p>
-              <button
-                onClick={() => handleRefresh()}
-                className="text-white bg-blue-500  px-2 py-1 text-xs rounded-full shadow"
-              >
-                Refresh
-              </button>
-            </div>
-            <div className="flex items-center gap-4 my-5">
-              <div className="">Bets</div>
-              <div className="grid grid-cols-5 gap-3">
-                {value?.map((item, i) => (
-                  <div
-                    key={i}
-                    className="border px-4 py-2 gap-2 flex flex-col items-center"
-                  >
-                    <span className="border-b">{item.betNumber}</span>
-                    <span className="text-green-500">₹{item.betAmount}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
       <div className="flex justify-center items-center mt-4">
         {Array.from({ length: totalPages }, (_, i) => i + 1)?.map((page, i) => (
           <button

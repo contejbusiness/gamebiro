@@ -31,7 +31,9 @@ export const POST = async (request) => {
         filterBets?.map(async (bet) => {
           const user = await User.findById(bet?.userId);
           const totalAmount = bet?.betAmount;
-          user.balance += totalAmount;
+          const commission = totalAmount * 0.05; // calculate the 5% commission
+          const payout = totalAmount - commission;
+          user.balance += totalAmount + payout;
           await user.save();
         })
       );

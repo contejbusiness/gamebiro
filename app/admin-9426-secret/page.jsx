@@ -98,8 +98,7 @@ const Page = () => {
 
       if (response.ok) {
         setStatus("Started");
-      }
-      console.log("Failed to start");
+      } else console.log("Failed to start");
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -194,7 +193,6 @@ const Page = () => {
           </div>
 
           <div className="border-b pb-4">
-            <p>{currentGame?._id}</p>
             {currentGame && <SubmitWinnerForm gameId={currentGame?._id} />}
           </div>
         </div>
