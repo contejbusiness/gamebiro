@@ -24,6 +24,7 @@ export const PUT = async (request) => {
 };
 
 const createNewGame = async () => {
+  
   try {
     await connectToDB();
     // Get the current game number

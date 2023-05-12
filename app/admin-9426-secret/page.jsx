@@ -73,7 +73,7 @@ const Page = () => {
 
         setCurrentGame(data);
 
-        const result = data.bets.reduce((acc, obj) => {
+        const result = data?.bets.reduce((acc, obj) => {
           const index = acc.findIndex(
             (item) => item.betNumber === obj.betNumber
           );
@@ -99,6 +99,9 @@ const Page = () => {
       if (response.ok) {
         setStatus("Started");
       }
+
+      const data = await response.json();
+      console.log(data)
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -174,7 +177,7 @@ const Page = () => {
         <div>
           <div className="grid grid-cols-5 gap-3">
             {gameBets ? (
-              gameBets.map((bet, i) => (
+              gameBets?.map((bet, i) => (
                 <div
                   key={i}
                   className="flex flex-col items-center justify-center py-2 border rounded gap-2"
@@ -186,7 +189,7 @@ const Page = () => {
                 </div>
               ))
             ) : (
-              <p className="text-xl py-6">No Bets Placed Yet...</p>
+              <p className="py-6">No Bets Placed Yet...</p>
             )}
           </div>
 
@@ -204,7 +207,7 @@ const Page = () => {
           <p className="text-xs">
             Result -{" "}
             <span className="text-sm font-bold text-blue-500">
-              {recentGames.result}
+              {recentGames?.result}
             </span>
           </p>
 
@@ -215,15 +218,15 @@ const Page = () => {
             </span>
           </p>
           <div className="grid grid-cols-5 gap-3 my-2">
-            {recentGameBets ? (
-              recentGameBets.map((bet, i) => (
+            {recentGameBets?.length > 0 ? (
+              recentGameBets?.map((bet, i) => (
                 <div
                   key={i}
                   className="flex flex-col items-center justify-center py-2 border rounded gap-2"
                 >
-                  <div className="border-b">{bet.betNumber}</div>
+                  <div className="border-b">{bet?.betNumber}</div>
                   <div className="text-blue-500 font-bold">
-                    ₹{bet.betAmount}
+                    ₹{bet?.betAmount}
                   </div>
                 </div>
               ))
