@@ -59,8 +59,6 @@ const MyRecord = () => {
   let endIndex = startIndex + PAGE_SIZE;
   let currentRecords = Object.values(grouped).slice(startIndex, endIndex);
 
-  // Render the component
-
   return (
     <div className=" p-4 w-full">
       {currentRecords &&
