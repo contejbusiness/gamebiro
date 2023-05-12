@@ -1,8 +1,11 @@
+import { NextResponse } from "next/server";
+
 import RGBet from "@/schemas/rgbet";
+
 import User from "@/schemas/user";
 import { connectToDB } from "@/utils/database";
 
-export const PUT = async (request) => {
+export async function PUT(request) {
   try {
     connectToDB();
 
@@ -23,13 +26,6 @@ export const PUT = async (request) => {
     await game.save();
 
     const filterBets = game.bets.filter((bet) => bet.betNumber == gameNumber);
-    console.log("🚀 ~ file: route.js:33 ~ POST ~ filterBets:", filterBets);
-
-    // filterBets.forEach(async (bet) => {
-    //   const user = await User.findById(bet.userId);
-    //   user.balance += 2 * bet.betAmount;
-    //   user.save();
-    // });
 
     const response = await Promise.all(
       filterBets.map(async (bet) => {
@@ -39,20 +35,9 @@ export const PUT = async (request) => {
         await user.save();
       })
     );
-    console.log("🚀 ~ file: route.js:50 ~ POST ~ response:", response);
 
-    // Update the balance of all users who bet on the bet number
-    // try {
-    //   const response = await User.updateMany(
-    //     { _id: { $in: filterBets.map((bet) => bet.userId) } },
-    //     { $inc: { balance: totalAmount } }
-    //   );
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    return new Response(JSON.stringify("Result Announced"), { status: 200 });
+    return NextResponse.json({message: "Result Updated"});
   } catch (error) {
     return new Response(JSON.stringify(error.message), { status: 500 });
   }
-};
+}
