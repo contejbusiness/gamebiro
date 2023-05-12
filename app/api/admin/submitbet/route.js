@@ -3,23 +3,25 @@ import User from "@/schemas/user";
 
 export const POST = async (request) => {
   try {
-    connectToDB();
+    // connectToDB();
 
-    const { gameId, gameNumber } = await request.json();
+    return new Response(JSON.stringify("HELLO"), { status: 200 });
 
-    if (!gameId)
-      return new Response(JSON.stringify("Game Id Not Found"), { status: 404 });
+    // const { gameId, gameNumber } = await request.json();
 
-    const game = await RGBet.findById(gameId).populate({
-      path: "bets",
-      model: "Bet",
-    });
+    // if (!gameId)
+    //   return new Response(JSON.stringify("Game Id Not Found"), { status: 404 });
 
-    if (!game)
-      return new Response(JSON.stringify("Game Not Found"), { status: 404 });
+    // const game = await RGBet.findById(gameId).populate({
+    //   path: "bets",
+    //   model: "Bet",
+    // });
 
-    game.result = gameNumber;
-    await game.save();
+    // if (!game)
+    //   return new Response(JSON.stringify("Game Not Found"), { status: 404 });
+
+    // game.result = gameNumber;
+    // await game.save();
 
     // const filterBets = game.bets.filter((bet) => bet.betNumber == gameNumber);
 
@@ -32,7 +34,7 @@ export const POST = async (request) => {
     //   })
     // );
 
-    return new Response(JSON.stringify("Success"), { status: 200 });
+    // return new Response(JSON.stringify("Success"), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify(error), { status: 500 });
   }
