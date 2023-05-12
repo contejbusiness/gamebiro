@@ -22,8 +22,12 @@ const MyRecord = () => {
     }, {});
   }
 
-  const totalRecords = Object.keys(grouped).length;
-  const totalPages = Math.ceil(totalRecords / PAGE_SIZE);
+  let totalRecords;
+  let totalPages;
+  if (grouped && records?.length > 0) {
+    totalRecords = Object.keys(grouped).length;
+    Math.ceil(totalRecords / PAGE_SIZE);
+  }
 
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -51,9 +55,18 @@ const MyRecord = () => {
     fetchMyGameRecords();
   }, [session?.user]);
 
-  const startIndex = (currentPage - 1) * PAGE_SIZE;
-  const endIndex = startIndex + PAGE_SIZE;
-  const currentRecords = Object.values(grouped).slice(startIndex, endIndex);
+  let startIndex;
+  let endIndex;
+  let currentRecords;
+
+  if (grouped) {
+    startIndex = (currentPage - 1) * PAGE_SIZE;
+    endIndex = startIndex + PAGE_SIZE;
+    currentRecords = Object.values(grouped ? grouped : {}).slice(
+      startIndex,
+      endIndex
+    );
+  }
 
   return (
     <div className=" p-4 w-full">
