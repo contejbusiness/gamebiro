@@ -21,16 +21,16 @@ export const POST = async (request) => {
     game.result = gameNumber;
     await game.save();
 
-    const filterBets = game.bets.filter((bet) => bet.betNumber == gameNumber);
+    // const filterBets = game.bets.filter((bet) => bet.betNumber == gameNumber);
 
-    const response = await Promise.all(
-      filterBets?.map(async (bet) => {
-        const user = await User.findById(bet.userId);
-        const totalAmount = bet.betAmount;
-        user.balance += totalAmount;
-        await user.save();
-      })
-    );
+    // const response = await Promise.all(
+    //   filterBets?.map(async (bet) => {
+    //     const user = await User.findById(bet.userId);
+    //     const totalAmount = bet.betAmount;
+    //     user.balance += totalAmount;
+    //     await user.save();
+    //   })
+    // );
 
     return new Response(JSON.stringify("Success"), { status: 200 });
   } catch (error) {
