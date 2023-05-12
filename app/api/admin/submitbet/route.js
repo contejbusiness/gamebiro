@@ -22,25 +22,21 @@ export const POST = async (request) => {
     game.result = gameNumber;
     await game.save();
 
-    return new Response(
-      JSON.stringify({
-        game,
-      }),
-      { status: 200 }
+    const filterBets = game?.bets?.filter(
+      (bet) => bet?.betNumber == gameNumber
     );
 
-    // const filterBets = game.bets.filter((bet) => bet.betNumber == gameNumber);
+    if (filterBets?.length > 0)
+      await Promise.all(
+        filterBets?.map(async (bet) => {
+          const user = await User.findById(bet?.userId);
+          const totalAmount = bet?.betAmount;
+          user?.balance += totalAmount;
+          await user.save();
+        })
+      );
 
-    // const response = await Promise.all(
-    //   filterBets?.map(async (bet) => {
-    //     const user = await User.findById(bet.userId);
-    //     const totalAmount = bet.betAmount;
-    //     user.balance += totalAmount;
-    //     await user.save();
-    //   })
-    // );
-
-    // return new Response(JSON.stringify("Success"), { status: 200 });
+    return new Response(JSON.stringify("Success"), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify(error), { status: 500 });
   }
