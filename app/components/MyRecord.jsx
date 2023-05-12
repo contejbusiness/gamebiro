@@ -13,7 +13,7 @@ const MyRecord = () => {
   let grouped;
   if (records?.length > 0) {
     grouped = records?.reduce((acc, obj) => {
-      const key = obj.gameId._id;
+      const key = obj?.gameId?._id;
       if (!acc[key]) {
         acc[key] = [];
       }

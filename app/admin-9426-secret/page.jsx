@@ -28,7 +28,7 @@ const Page = () => {
       );
       const data = await response.json();
       if (response.ok) {
-        const result = data[0]?.bets.reduce((acc, obj) => {
+        const result = data[0]?.bets?.reduce((acc, obj) => {
           const index = acc.findIndex(
             (item) => item.betNumber === obj.betNumber
           );
@@ -73,7 +73,7 @@ const Page = () => {
 
         setCurrentGame(data);
 
-        const result = data?.bets.reduce((acc, obj) => {
+        const result = data?.bets?.reduce((acc, obj) => {
           const index = acc.findIndex(
             (item) => item.betNumber === obj.betNumber
           );
