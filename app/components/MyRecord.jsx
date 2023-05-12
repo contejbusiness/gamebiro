@@ -29,19 +29,16 @@ const MyRecord = () => {
   };
 
   let grouped = {};
-  try {
-    if (records?.length > 0) {
-      grouped = records.reduce((acc, obj) => {
-        const key = obj.gameId._id;
-        if (!acc[key]) {
-          acc[key] = [];
-        }
-        acc[key].push(obj);
-        return acc;
-      }, {});
-    }
-  } catch (error) {
-    console.log(error);
+
+  if (records?.length > 0) {
+    grouped = records?.reduce((acc, obj) => {
+      const key = obj?.gameId?._id;
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(obj);
+      return acc;
+    }, {});
   }
 
   let totalRecords = Object.keys(grouped)?.length;
