@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Page = () => {
   const handleWhatsAppClick = () => {
-    const url = `https://wa.me/8769066426`;
+    const url = `https://wa.me/+917851843298`;
     window.open(url, "_blank");
   };
 
