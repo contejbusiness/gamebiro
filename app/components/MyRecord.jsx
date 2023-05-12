@@ -5,33 +5,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 const MyRecord = () => {
-  const PAGE_SIZE = 1; // set the number of records per page
+  const PAGE_SIZE = 1;
   const { data: session } = useSession();
   const [records, setRecords] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  let grouped;
-  if (records?.length > 0) {
-    grouped = records?.reduce((acc, obj) => {
-      const key = obj?.gameId._id;
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(obj);
-      return acc;
-    }, {});
-  }
-
-  let totalRecords = Object?.keys(records?.length > 0 ? grouped : {}).length;
-  let totalPages = Math.ceil(totalRecords / PAGE_SIZE);
-
-  const handleClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handleRefresh = () => {
+  useEffect(() => {
     fetchMyGameRecords();
-  };
+  }, [session?.user]);
 
   const fetchMyGameRecords = async () => {
     try {
@@ -47,16 +28,35 @@ const MyRecord = () => {
     }
   };
 
-  useEffect(() => {
+  let grouped = {};
+
+  if (records?.length > 0) {
+    grouped = records.reduce((acc, obj) => {
+      const key = obj.gameId._id;
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(obj);
+      return acc;
+    }, {});
+  }
+
+  let totalRecords = Object.keys(grouped).length;
+  let totalPages = Math.ceil(totalRecords / PAGE_SIZE);
+
+  const handleClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleRefresh = () => {
     fetchMyGameRecords();
-  }, [session?.user]);
+  };
 
   let startIndex = (currentPage - 1) * PAGE_SIZE;
   let endIndex = startIndex + PAGE_SIZE;
-  let currentRecords = Object.values(grouped ? grouped : {}).slice(
-    startIndex,
-    endIndex
-  );
+  let currentRecords = Object.values(grouped).slice(startIndex, endIndex);
+
+  // Render the component
 
   return (
     <div className=" p-4 w-full">
