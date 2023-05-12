@@ -191,7 +191,7 @@ const Page = () => {
           </div>
 
           <div className="border-b pb-4">
-            <SubmitWinnerForm gameId={currentGame._id} />
+            {currentGame && <SubmitWinnerForm gameId={currentGame?._id} />}
           </div>
         </div>
       </div>
