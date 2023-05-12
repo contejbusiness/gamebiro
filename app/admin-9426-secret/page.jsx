@@ -101,7 +101,7 @@ const Page = () => {
       }
 
       const data = await response.json();
-      console.log(data)
+      console.log(data);
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -182,9 +182,9 @@ const Page = () => {
                   key={i}
                   className="flex flex-col items-center justify-center py-2 border rounded gap-2"
                 >
-                  <div className="border-b">{bet.betNumber}</div>
+                  <div className="border-b">{bet?.betNumber}</div>
                   <div className="text-blue-500 font-bold">
-                    ₹{bet.betAmount}
+                    ₹{bet?.betAmount}
                   </div>
                 </div>
               ))
@@ -205,7 +205,7 @@ const Page = () => {
 
         <div className="my-4">
           <p className="text-xs">
-            Result -{" "}
+            Result -
             <span className="text-sm font-bold text-blue-500">
               {recentGames?.result}
             </span>
@@ -245,13 +245,13 @@ const Page = () => {
         <div className="flex justify-center mt-4">
           <button
             className="mr-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
-            onClick={handlePrevPage}
+            onClick={() => handlePrevPage()}
           >
             Previous
           </button>
           <button
             className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
-            onClick={handleNextPage}
+            onClick={() => handleNextPage()}
           >
             Next
           </button>

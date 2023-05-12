@@ -76,7 +76,7 @@ export const POST = async (request) => {
     await game.save();
 
     // Return the user bet information to the client
-    return new Response(JSON.stringify(userBet));
+    return new Response(JSON.stringify(userBet), { status: 200});
   } catch (error) {
     console.error(error);
     return new Response("Internal Server Error", { status: 500 });
