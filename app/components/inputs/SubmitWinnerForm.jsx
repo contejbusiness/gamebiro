@@ -14,11 +14,11 @@ const SubmitWinnerForm = ({ gameId }) => {
       try {
         setIsLoading(true);
         if (gameId) {
-          const response = await fetch("/api/admin/submitwinner", {
-            method: "PUT",
+          const response = await fetch("/api/submitbet", {
+            method: "POST",
             body: JSON.stringify({
-              gameId: gameId,
-              gameNumber: inputNumber,
+              gameId: String(gameId),
+              gameNumber: Number(inputNumber),
             }),
           });
           if (response.ok) {
