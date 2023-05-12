@@ -99,9 +99,7 @@ const Page = () => {
       if (response.ok) {
         setStatus("Started");
       }
-
-      const data = await response.json();
-      console.log(data);
+      console.log("Failed to start");
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -115,6 +113,8 @@ const Page = () => {
       const response = await fetch("/api/rgbet", { method: "PUT" });
       if (response.ok) {
         setStatus("Stopped");
+      } else {
+        toast.error("Failed to stop");
       }
     } catch (error) {
       toast.error(error.message);

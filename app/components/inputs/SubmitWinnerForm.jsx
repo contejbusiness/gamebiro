@@ -6,7 +6,6 @@ import { toast } from "react-hot-toast";
 const SubmitWinnerForm = ({ gameId }) => {
   const [inputNumber, setInputNumber] = useState(0);
   const [isLoading, setIsLoading] = useState("");
-  const [data, setData] = useState();
 
   const submitNumber = async () => {
     if (!inputNumber) toast.error("Enter Winner Number");
