@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 const SubmitWinnerForm = ({ gameId }) => {
-  const [inputNumber, setInputNumber] = useState("");
+  const [inputNumber, setInputNumber] = useState();
   const [isLoading, setIsLoading] = useState("");
   const [data, setData] = useState();
 
@@ -15,7 +15,7 @@ const SubmitWinnerForm = ({ gameId }) => {
         setIsLoading(true);
         if (gameId) {
           const response = await fetch("/api/admin/submitwinner", {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify({
               gameId: gameId,
               gameNumber: inputNumber,
