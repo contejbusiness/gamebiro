@@ -24,7 +24,6 @@ export const PUT = async (request) => {
 };
 
 const createNewGame = async () => {
-  
   try {
     await connectToDB();
     // Get the current game number
@@ -252,8 +251,10 @@ export const GET = async (request) => {
       .populate({ path: "bets", model: "Bet" })
       .exec();
 
-    return new Response(JSON.stringify(latestGame));
+    return new Response(JSON.stringify(latestGame), { status: 200 });
   } catch (error) {
-    return new Response("Internal Server Error", { status: 500, error: error });
+    return new Response(JSON.stringify("Internal Server Error"), {
+      status: 500,
+    });
   }
 };
