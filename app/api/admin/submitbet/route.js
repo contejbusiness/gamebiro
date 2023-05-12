@@ -3,12 +3,16 @@ import User from "@/schemas/user";
 
 export const POST = async (request) => {
   try {
-    // connectToDB();
+    connectToDB();
 
-    return new Response(JSON.stringify("HELLO"), { status: 200 });
-
-    // const { gameId, gameNumber } = await request.json();
-
+    const { gameId, gameNumber } = await request.json();
+    return new Response(
+      JSON.stringify({
+        gameId,
+        gameNumber,
+      }),
+      { status: 200 }
+    );
     // if (!gameId)
     //   return new Response(JSON.stringify("Game Id Not Found"), { status: 404 });
 
