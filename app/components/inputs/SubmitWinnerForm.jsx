@@ -6,23 +6,28 @@ import { toast } from "react-hot-toast";
 const SubmitWinnerForm = ({ gameId }) => {
   const [inputNumber, setInputNumber] = useState("");
   const [isLoading, setIsLoading] = useState("");
+  const [data, setData] = useState();
 
   const submitNumber = async () => {
     if (!inputNumber) toast.error("Enter Winner Number");
     else {
       try {
         setIsLoading(true);
-        const response = await fetch("/api/admin/submitwinner", {
-          method: "POST",
-          body: JSON.stringify({
-            gameId,
-            gameNumber: inputNumber,
-          }),
-        });
-        if (response.ok) {
-          toast.success("Winner Submitted");
-        } else {
-          toast.error("Failed to submit winner");
+        if (gameId) {
+          const response = await fetch("/api/admin/submitwinner", {
+            method: "POST",
+            body: JSON.stringify({
+              gameId: gameId,
+              gameNumber: inputNumber,
+            }),
+          });
+          if (response.ok) {
+            toast.success("Winner Submitted");
+          } else {
+            const data = await response.json();
+            setData(data);
+            toast.error(data);
+          }
         }
       } catch (error) {
         toast.error(error.message);
@@ -34,6 +39,8 @@ const SubmitWinnerForm = ({ gameId }) => {
 
   return (
     <div className="w-full flex flex-col gap-5 my-4">
+      <p>{data ? data : "No Data"}</p>
+
       <div className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
