@@ -31,7 +31,7 @@ export const POST = async (request) => {
         filterBets?.map(async (bet) => {
           const user = await User.findById(bet?.userId);
           const totalAmount = bet?.betAmount;
-          user?.balance += totalAmount;
+          user.balance += totalAmount;
           await user.save();
         })
       );
