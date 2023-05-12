@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 const SubmitWinnerForm = ({ gameId }) => {
-  const [inputNumber, setInputNumber] = useState();
+  const [inputNumber, setInputNumber] = useState(0);
   const [isLoading, setIsLoading] = useState("");
   const [data, setData] = useState();
 
@@ -14,7 +14,7 @@ const SubmitWinnerForm = ({ gameId }) => {
       try {
         setIsLoading(true);
         if (gameId) {
-          const response = await fetch("/api/submitbet", {
+          const response = await fetch("/api/admin/submitbet", {
             method: "POST",
             body: JSON.stringify({
               gameId: String(gameId),
@@ -22,11 +22,9 @@ const SubmitWinnerForm = ({ gameId }) => {
             }),
           });
           if (response.ok) {
-            toast.success("Winner Submitted");
+            toast.success("Result Submitted");
           } else {
-            const data = await response.json();
-            setData(data);
-            toast.error(data);
+            toast.error("Failed to submit");
           }
         }
       } catch (error) {
@@ -39,8 +37,6 @@ const SubmitWinnerForm = ({ gameId }) => {
 
   return (
     <div className="w-full flex flex-col gap-5 my-4">
-      <p>{data ? data : "No Data"}</p>
-
       <div className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
